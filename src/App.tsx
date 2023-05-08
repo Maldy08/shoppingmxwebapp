@@ -1,10 +1,17 @@
 
+import { Provider } from 'react-redux'
 import './App.css'
+import store from './store/store'
+import { BrowserRouter } from 'react-router-dom'
+import { AppRouter } from './router/AppRouter'
 
 export default function App() {
+  
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Provider store={ store }>
+      <BrowserRouter>
+        <AppRouter/>
+      </BrowserRouter>
+    </Provider>
   )
 }
