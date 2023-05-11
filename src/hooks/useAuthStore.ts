@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
 import { onCheking, onLogin, onLogout } from "../store/auth/authSlice";
-import { singInWithGoogle } from "../firebase/providers";
+import { singInWithGoogle, logiWithEmailPassword } from "../firebase/providers";
 
 
 
@@ -18,12 +18,18 @@ export const useAuthStore = () => {
         dispatch( onLogin(result));
     }
 
-    return {
-        startGoogleSingIn,
-        status,
-        user,
+    const startLoginWithEmailPassword = async (email:string,password:string) => {
+        dispatch( onCheking() );
+        const result = await logiWithEmailPassword(email,password);
+        if(!result.ok) return dispatch( onLogout());
+        dispatch( onLogin( result ));
     }
 
-
+    return {
+        startGoogleSingIn,
+        startLoginWithEmailPassword,
+        status : "not-authenticated",
+        user,
+    }
 
 }
