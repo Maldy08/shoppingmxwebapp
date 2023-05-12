@@ -2,13 +2,19 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
 
 import logo from "../../assets/app-logo.png"
+import { useCiudadesStore } from "../../hooks";
+import { useEffect } from "react";
 
 
 
 export const RegisterPage = () => {
 
+    const {startLoadingCiudades } = useCiudadesStore();
 
-
+    useEffect(() => {
+      startLoadingCiudades();
+    }, [])
+    
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -23,7 +29,7 @@ export const RegisterPage = () => {
                     </h2>
                 </div>
 
-                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm shadow-md p-5">
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md  p-5">
                     <Formik
                         initialValues={{
                             email: '',
@@ -90,6 +96,7 @@ export const RegisterPage = () => {
                                                 type="text"
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
+                                             <ErrorMessage name="nombreEncargado" component="span" className="block text-xs font-medium"/>
                                         </div>
 
                                         <div className="flex items-center justify-between">
@@ -106,6 +113,7 @@ export const RegisterPage = () => {
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 
                                             />
+                                            <ErrorMessage name="nombreNegocio" component="span" className="block text-xs font-medium" />
                                         </div>
 
                                         <div className="mt-4">
