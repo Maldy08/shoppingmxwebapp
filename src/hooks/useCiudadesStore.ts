@@ -3,6 +3,9 @@ import { RootState } from "../store/store"
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { FirebaseDB } from "../firebase/config";
 import { onListCiudades } from "../store/ciudades/ciudadesSlice";
+import { Ciudades } from "../interfaces";
+import { ciudadesCollection } from "../firebase/collections";
+
 
 export const useCiudadesStore = () => {
 
@@ -23,8 +26,24 @@ export const useCiudadesStore = () => {
 
     }
 
+
+    const startLoadingCiudadesWithConverter = async () => {
+        const q = query(ciudadesCollection, orderBy("id"));
+        const ciudades = await getDocs(q);
+        const listaCiudades: Ciudades[] = [];
+        ciudades.docs.forEach((ciudadDoc) => {
+            const ciudad = ciudadDoc.data();
+            listaCiudades.push(ciudad);
+        });
+
+        dispatch( onListCiudades( listaCiudades ));
+
+
+    }
+
     return {
         startLoadingCiudades,
+        startLoadingCiudadesWithConverter,
         ciudades,
         isLoading,
     }

@@ -9,10 +9,10 @@ import { useEffect } from "react";
 
 export const RegisterPage = () => {
 
-    const {startLoadingCiudades } = useCiudadesStore();
+    const { startLoadingCiudadesWithConverter } = useCiudadesStore();
 
     useEffect(() => {
-      startLoadingCiudades();
+        startLoadingCiudadesWithConverter();
     }, [])
     
 
