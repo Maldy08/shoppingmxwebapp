@@ -1,22 +1,17 @@
-import { useEffect } from "react";
-import { useNegociosStore } from "../../hooks/useNegociosStore"
+import { MainLayout } from "../layout/mainLayout"
 
 
 export const HomePage = () => {
-    const {  startLoadingNegocios } =  useNegociosStore();
 
-    useEffect(() => {
-
-        startLoadingNegocios();
-      
-    }, [])
     
 
     return (
+        <MainLayout>
         <div className="container">
             <h1 className="text-center font-bold text-2xl">
                 HomePage!!!
             </h1>
         </div>
+        </MainLayout>
     )
 }
