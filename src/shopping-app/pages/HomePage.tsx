@@ -1,4 +1,4 @@
-import { MainLayout } from "../layout/mainLayout"
+import { MainLayout } from "../layout/MainLayout"
 
 
 export const HomePage = () => {
@@ -7,9 +7,9 @@ export const HomePage = () => {
 
     return (
         <MainLayout>
-        <div className="container">
+        <div className="container mt-5">
             <h1 className="text-center font-bold text-2xl">
-                HomePage!!!
+                Pagina de Inicio!
             </h1>
         </div>
         </MainLayout>

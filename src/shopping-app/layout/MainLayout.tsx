@@ -1,33 +1,34 @@
 import classNames from "classnames";
-import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useState, PropsWithChildren} from "react";
+import { SideBar, Navbar } from "../components";
+
 
 export const MainLayout = (props: PropsWithChildren) => {
     const [collapsed, setSidebarCollapsed] = useState(false);
+    const [showSidebar, setshowSidebar] = useState(true);
 
     return (
 
         <div
         className={classNames({
-          // 👇 use grid layout
-          "grid min-h-screen": true,
-          // 👇 toggle the width of the sidebar depending on the state
+          "grid bg-zinc-100 min-h-screen": true,
           "grid-cols-sidebar": !collapsed,
           "grid-cols-sidebar-collapsed": collapsed,
-          // 👇 transition animation classes
           "transition-[grid-template-columns] duration-300 ease-in-out": true,
         })}
       >
         {/* sidebar */}
-        <div className="bg-indigo-700 text-white">
-          <button title="." onClick={() => setSidebarCollapsed((prev) => !prev)}>
-            <Bars3Icon className="w-10 h-10" />
-          </button>
-
-
+        <SideBar
+          collapsed={collapsed}
+          setCollapsed={ setSidebarCollapsed }
+          shown={ showSidebar }
+        />
+        <div>
+          <Navbar onMenuButtonClick={ () => setshowSidebar( ( prev ) => !prev )} />
+          { props.children }
         </div>
         {/* content */}
-        <div className=""> {props.children}</div>
+       
       </div>
     );
 }
