@@ -25,7 +25,7 @@ export const SideBar = ({
     return (
         <div
         className={cn({
-            "bg-indigo-700 text-zinc-50 z-20": true,
+            "bg-indigo-700 text-zinc-50 fixed md:static md:translate-x-0 z-20": true,
             "transition-all duration-300 ease-in-out": true,
             "fixed md:static md:translate-x-0": true,
             "w-[300px]": !collapsed,
@@ -36,14 +36,14 @@ export const SideBar = ({
         >
             <div
                 className={cn({
-                "flex flex-col justify-between": true,
+                "flex flex-col justify-between h-screen sticky inset-0 w-full": true,
                 "h-full":true
                 })}
             >
             {/* logo and collapse button */}
                 <div
                     className={cn({
-                        "flex items-center border-b border-b-indigo-800": true,
+                        "flex items-center border-b border-b-indigo-800 transition-none": true,
                          "p-4 justify-between": !collapsed,
                         "py-4 justify-center": collapsed,
                      })}

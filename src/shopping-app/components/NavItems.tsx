@@ -15,12 +15,12 @@ export const NavItems: NavItem[] = [
     },
     {
       label: "Negocio",
-      href: "/negocio",
+      href: "/negocios",
       icon: <BriefcaseIcon className="w-6 h-6" />,
     },
     {
       label: "Productos",
-      href: "/producto",
+      href: "/productos",
       icon: <ShoppingBagIcon className="w-6 h-6" />,
     },
     {

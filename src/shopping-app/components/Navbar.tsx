@@ -12,7 +12,7 @@ export const Navbar = ( props: Props ) => {
     return (
         <nav
             className={cn({
-                "bg-white text-zinc-50":true,
+                "bg-white text-zinc-500":true,
                 "flex items-center":true,
                 "w-screen md:w-full sticky z-10 px-4 shadow-sm h-[73px] top-0 ": true,
             })}
