@@ -51,11 +51,7 @@ export const SideBar = ({
                     {!collapsed && <span className="whitespace-nowrap"> <img src={logo} alt="logo"  width={50} /> </span>}
                     <button
                         title="."
-                        className={cn({
-                        "grid place-content-center": true, // position
-                        "hover:bg-indigo-800 ": true, // colors
-                        "w-10 h-10 rounded-full": true, // shape
-                        })}
+                        className="grid place-content-center hover:bg-indigo-800 w-10 h-10 rounded-full opacity-0 md:opacity-100"
                         // 👇 set the collapsed state on click
                         onClick={() => setCollapsed( !collapsed )}
                     >
