@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
 
-import { collection, getDocs } from "firebase/firestore";
-import { FirebaseDB } from "../firebase/config";
-
+import {  getDocs, orderBy, query } from "firebase/firestore";
 import { onListNegocios } from "../store/negocios/negociosSlice";
+import { negociosCollection } from "../firebase/collections";
+import { Negocios } from "../interfaces";
 
 export const useNegociosStore = () => {
 
@@ -12,16 +12,15 @@ export const useNegociosStore = () => {
     const dispatch = useDispatch();
 
     const startLoadingNegocios = async () => {
-        
-        const querySnapshot = await getDocs( collection (FirebaseDB, "negocios"));
-        const negocios: any[] = [];
-        querySnapshot.forEach( ( doc ) => {
-            negocios.push({id: doc.id, ...doc.data() });
+        const q = query(negociosCollection,orderBy("id"));
+        const negocios = await getDocs(q);
+        const listNegocios: Negocios[] = [];
+        negocios.docs.forEach( ( negocioDoc ) => {
+            const negocio = negocioDoc.data();
+            listNegocios.push(negocio);
         });
 
-        dispatch( onListNegocios( negocios ));
-
-    
+        dispatch( onListNegocios( listNegocios ));
     }
 
     return {

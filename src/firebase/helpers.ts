@@ -9,3 +9,4 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 
 
   export { createCollection } ;
+

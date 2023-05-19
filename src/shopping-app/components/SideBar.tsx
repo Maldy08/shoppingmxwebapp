@@ -3,7 +3,7 @@ import cn from "classnames";
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 import { Link, NavLink } from "react-router-dom";
 import { NavItem, NavItems } from ".";
-import logo from "../../assets/app-logo.png"
+import logo from "../../assets/app-logo-white.png"
 
 // 👇 props to get and set the collapsed state from parent component
 type Props = {
@@ -48,7 +48,7 @@ export const SideBar = ({
                         "py-4 justify-center": collapsed,
                      })}
                 >
-                    {!collapsed && <span className="whitespace-nowrap"> <img src={logo} alt="logo"  width={50} /> </span>}
+                    {!collapsed && <span className="whitespace-nowrap"> <img src={logo} alt="logo"  width={60} /> </span>}
                     <button
                         title="."
                         className="grid place-content-center hover:bg-indigo-800 w-10 h-10 rounded-full opacity-0 md:opacity-100"

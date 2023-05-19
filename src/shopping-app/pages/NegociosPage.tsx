@@ -17,13 +17,17 @@ export const NegociosPage = () => {
     
     return (
         <MainLayout>
-            <div className="container mt-5">
-                <h1 className="text-center font-bold text-2xl">
-                    Pagina de Registro de Negocios
-                </h1>
-                { !isLoading && 
-                  <TableNegocios negocios={ negocios } />
-                }
+            <div className="m-2 bg-white">
+                <div className="overflow-x-auto sm:mx-6 lg: mx-8">
+                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div className="overflow-hidden">
+                        { !isLoading && 
+                            <TableNegocios negocios={ negocios } />
+                            
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </MainLayout>
     )
