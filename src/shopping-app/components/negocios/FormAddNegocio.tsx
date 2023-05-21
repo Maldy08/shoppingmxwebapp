@@ -40,10 +40,10 @@ interface FormValues {
     }
 
     const onSubmit = (values: FormValues) => {
-        setTimeout(() => {
+
         alert(JSON.stringify(values, null, 2));
-        }, 500);
-        };
+   
+    };
 
 const phoneNumberMask = [ "(", /[1-9]/, /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/ ];
 
