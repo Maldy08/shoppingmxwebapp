@@ -1,5 +1,7 @@
 
 
 export const CuponesPage = () => {
-    
+    return (
+        <></>
+    )
 }

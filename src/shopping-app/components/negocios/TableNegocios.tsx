@@ -1,5 +1,5 @@
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { Negocios } from "../../../interfaces"
+import { Negocios } from "@interfaces"
 
 
 type Props = {

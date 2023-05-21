@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { HomePage, NegociosPage, ProductosPage, PromocionesPage } from "../pages"
+import { CuponesPage, HomePage, NegociosPage, ProductosPage, PromocionesPage } from "../pages"
 
 
 
@@ -11,6 +11,7 @@ export const ShoppingAppRoutes = () => {
             <Route path="/negocios" element={ <NegociosPage/> } />
             <Route path="/productos" element= { <ProductosPage/> } />
             <Route path="/promociones" element={ <PromocionesPage/> } />
+            <Route path="/cupones" element={ <CuponesPage/> }/>
         </Routes>
     )
 }
