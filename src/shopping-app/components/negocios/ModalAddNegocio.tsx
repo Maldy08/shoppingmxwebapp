@@ -1,25 +1,14 @@
 
 
-import { Ciudades, Giros } from "@interfaces";
+import { Ciudades, Giros, Negocios } from "@interfaces";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import MaskedInput from "react-text-mask";
 import * as Yup from 'yup';
 
-interface FormValues {
-    nombre_empresa:string,
-    nombre_encargado:string,
-    giro_empresa:string,
-    horario:string,
-    numero_empleados:number,
-    pais:string,
-    estado:string,
-    ciudad:string,
-    correo:string,
-    telefono:string,
-    direccion:string
-    }
 
-    const initialValues: FormValues = {
+
+    const initialValues: Negocios = {
+        id:'20',
         nombre_empresa:'',
         nombre_encargado:'',
         giro_empresa:'',
@@ -27,17 +16,19 @@ interface FormValues {
         numero_empleados:0,
         pais:'México',
         estado:'Baja California',
-        ciudad:'',
+        ciudad:'Mexicali',
         correo:'',
         telefono:'',
-        direccion:''
+        direccion:'',
+        photoUrl:'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
     }
 
-    const onSubmit = (values: FormValues) => {
+    // const onSubmit = (values: FormValues) => {
 
-        alert(JSON.stringify(values, null, 2));
+    //     alert(JSON.stringify(values, null, 2));
+        
    
-    };
+    // };
 
 const phoneNumberMask = [ "(", /[1-9]/, /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/ ];
 type Props = {
@@ -45,33 +36,40 @@ type Props = {
     onShowModalClick():void
     giros: Giros[]
     ciudades: Ciudades[]
+    onSaveData: (data: Negocios) => Promise<void>
 }
 
 export const ModalAddNegocio = ( props: Props ) => {
     return (
      <>
-        <div className="w-fulljustify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-full max-w-md max-h-full">
             {/*content*/}
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                     {/*header*/}
                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                         <h3 className="text-2xl font-semibold">
-                            Agregar Negocio
+                            Agregar negocio
                         </h3>
                     </div>
                     {/*body*/}    
                     <div className="relative p-6 flex-auto">
-                        <Formik
+                    <Formik
                             initialValues={initialValues}
-                            onSubmit={onSubmit}
+                            onSubmit={ ( values: Negocios ) => {
+                                alert(JSON.stringify(values, null, 2));
+                                props.onSaveData(values)
+                            }}
                             validationSchema={
                                 Yup.object({
                                     nombre_empresa: Yup.string().required('Campo requerido'),
                                     nombre_encargado: Yup.string().required('Campo requerido'),
                                     giro_empresa:Yup.string().required('Campo requerido'),
                                     horario:Yup.string().required('Campo requerido'),
-                                    numero_empleados:Yup.number().required('Campo requerido'),
+                                    numero_empleados:Yup.number()
+                                    .integer()
+                                    .not([0],'* No puede ser un valor 0'),
+
                                     pais:Yup.string().required('Campo requerido'),
                                     estado:Yup.string().required('Campo requerido'),
                                     ciudad:Yup.string().required('Campo requerido'),
@@ -83,7 +81,7 @@ export const ModalAddNegocio = ( props: Props ) => {
 
                          >
                             {
-                                () => (
+                                ({ setFieldValue }) => (
                                     <Form className="space-y-6">
                                         <div>
                                             <label htmlFor="nombre_empresa" className="block text-sm font-medium leading-6 text-gray-900">
@@ -208,9 +206,11 @@ export const ModalAddNegocio = ( props: Props ) => {
                                             <div className="mt-2">
                                                 <Field name="telefono">
                                                     {
-                                                        () => <MaskedInput
+                                                        ({}) => <MaskedInput
                                                             type="text"
+                                                            onChange={ (event:any) => setFieldValue('telefono', event.target.value )}
                                                             mask={ phoneNumberMask }
+                                                            // onChange={ ( event:any ) => setFieldValue('telefono', event.target.value)}
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             />
                                                     }
@@ -233,7 +233,21 @@ export const ModalAddNegocio = ( props: Props ) => {
                                                 <ErrorMessage name="direccion" component="span" className="block text-xs font-medium"/>
                                             </div>
                                         </div>
-                                        
+                                             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                                <button
+                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                    type="button"
+                                                    onClick={ props.onShowModalClick }
+                                                >
+                                                    Cerrar
+                                                </button>
+                                                <button
+                                                    className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
+                                                    type="submit"
+                                                >
+                                                    Guardar
+                                                </button>
+                                            </div>
                                     </Form>
                                 )
                             }
@@ -241,22 +255,8 @@ export const ModalAddNegocio = ( props: Props ) => {
                         </Formik>
                     </div>      
                     {/*footer*/}
-                    <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                        <button
-                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                            type="button"
-                            onClick={ props.onShowModalClick }
-                        >
-                            Cerrar
-                        </button>
-                        <button
-                            className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
-                            type="button"
-                        >
-                            Guardar
-                        </button>
-                        </div>
-                    </div>
+
+                </div>
             </div>
         </div>
      </>
