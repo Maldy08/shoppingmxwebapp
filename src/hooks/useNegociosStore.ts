@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
 
-import {  addDoc, collection, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
-import { onAddNewNegocio, onListNegocios } from "../store/negocios/negociosSlice";
+import {  addDoc, collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { onAddNewNegocio, onListNegocios, onModificarNegocio } from "../store/negocios/negociosSlice";
 import { negociosCollection } from "../firebase/collections";
 import { Negocios } from "@interfaces";
 import { FirebaseDB } from '../firebase/config';
@@ -11,7 +11,7 @@ import { FirebaseDB } from '../firebase/config';
 
 export const useNegociosStore = () => {
 
-    const { negocios, isLoading } = useSelector( (state: RootState) => state.negocios ); 
+    const { negocios, isLoading, isModificarNegocio } = useSelector( (state: RootState) => state.negocios ); 
     const dispatch = useDispatch();
 
     const startLoadingNegocios = async () => {
@@ -49,14 +49,26 @@ export const useNegociosStore = () => {
             docRef = negocioDoc.id
         })
 
-        console.log(docRef);
+        const negocioRef = doc(FirebaseDB,'negocios', docRef);
+        await updateDoc(negocioRef, { data }) 
+            .then(() => console.log('updated record'))
+            .catch( error => console.log( error ))
 
+       // console.log(docRef);
+
+    }
+
+    const modificarNegocio = () => {
+        dispatch( onModificarNegocio() );
     }
 
     return {
         startLoadingNegocios,
         startSavingNegocios,
+        startUpdateNegocio,
+        modificarNegocio,
         negocios,
         isLoading,
+        isModificarNegocio,
     }
 }

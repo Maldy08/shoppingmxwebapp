@@ -1,34 +1,24 @@
 
-
 import { Ciudades, Giros, Negocios } from "@interfaces";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import MaskedInput from "react-text-mask";
 import * as Yup from 'yup';
 
-
-
-    const initialValues: Negocios = {
-        id:'20',
-        nombre_empresa:'',
-        nombre_encargado:'',
-        giro_empresa:'',
-        horario:'',
-        numero_empleados:0,
-        pais:'México',
-        estado:'Baja California',
-        ciudad:'Mexicali',
-        correo:'',
-        telefono:'',
-        direccion:'',
-        photoUrl:'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
-    }
-
-    // const onSubmit = (values: FormValues) => {
-
-    //     alert(JSON.stringify(values, null, 2));
-        
-   
-    // };
+const initialValues: Negocios = {
+    id:'0',
+    nombre_empresa:'',
+    nombre_encargado:'',
+    giro_empresa:'',
+    horario:'',
+    numero_empleados:0,
+    pais:'México',
+    estado:'Baja California',
+    ciudad:'Mexicali',
+    correo:'',
+    telefono:'',
+    direccion:'',
+    photoUrl:'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
+}
 
 const phoneNumberMask = [ "(", /[1-9]/, /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/ ];
 type Props = {
@@ -37,6 +27,8 @@ type Props = {
     giros: Giros[]
     ciudades: Ciudades[]
     onSaveData: (data: Negocios) => Promise<void>
+    modify:boolean
+    negocios?: Negocios
 }
 
 export const ModalAddNegocio = ( props: Props ) => {
@@ -49,17 +41,19 @@ export const ModalAddNegocio = ( props: Props ) => {
                     {/*header*/}
                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                         <h3 className="text-2xl font-semibold">
-                            Agregar negocio
+                          { props.modify? 'Modificar negocio' : 'Agregar negocio'}
                         </h3>
                     </div>
                     {/*body*/}    
                     <div className="relative p-6 flex-auto">
                     <Formik
-                            initialValues={initialValues}
+                            
+                            initialValues={ props.modify? props.negocios! : initialValues }
                             onSubmit={ ( values: Negocios ) => {
-                                alert(JSON.stringify(values, null, 2));
-                                props.onSaveData(values)
+
+                                props.onSaveData( values )
                             }}
+
                             validationSchema={
                                 Yup.object({
                                     nombre_empresa: Yup.string().required('Campo requerido'),
@@ -83,7 +77,9 @@ export const ModalAddNegocio = ( props: Props ) => {
                             {
                                 ({ setFieldValue }) => (
                                     <Form className="space-y-6">
+                                
                                         <div>
+                                            
                                             <label htmlFor="nombre_empresa" className="block text-sm font-medium leading-6 text-gray-900">
                                             Nombre de la Empresa
                                             </label>
@@ -208,6 +204,7 @@ export const ModalAddNegocio = ( props: Props ) => {
                                                     {
                                                         ({}) => <MaskedInput
                                                             type="text"
+                                                            value={props.modify? props.negocios!.telefono : ''}
                                                             onChange={ (event:any) => setFieldValue('telefono', event.target.value )}
                                                             mask={ phoneNumberMask }
                                                             // onChange={ ( event:any ) => setFieldValue('telefono', event.target.value)}
@@ -245,7 +242,7 @@ export const ModalAddNegocio = ( props: Props ) => {
                                                     className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
                                                     type="submit"
                                                 >
-                                                    Guardar
+                                                    { props.modify ? 'Modificar' : 'Guardar' }
                                                 </button>
                                             </div>
                                     </Form>

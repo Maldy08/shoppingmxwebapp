@@ -10,6 +10,7 @@ export const negociosSlice = createSlice({
         isLoading:true,
         negocios:negocios,
         negocio:negocio,
+        isModificarNegocio:false,
     },
     reducers: {
         onListNegocios : ( state , { payload = [] }) => {
@@ -19,8 +20,13 @@ export const negociosSlice = createSlice({
         onAddNewNegocio: ( state, { payload }) => {
             state.isLoading = false,
             state.negocio = payload
-        }
+        },
+        onModificarNegocio: ( state ) => {
+
+            state.isModificarNegocio = true
+           // console.log(state.isModificarNegocio);
+        },
     }
 });
 
-export const { onListNegocios, onAddNewNegocio } = negociosSlice.actions;
+export const { onListNegocios, onAddNewNegocio, onModificarNegocio } = negociosSlice.actions;
