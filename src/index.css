@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    @font-face {
+      font-family: Poppins-Regular;
+      font-weight: 400;
+      src: url(/fonts/Poppins-Regular.ttf) format("ttf");
+    }
+    @font-face {
+      font-family: Poppins-Bold;
+      font-weight: 500;
+      src: url(/fonts/Poppins-Bold.ttf) format("ttf");
+    }
+  }

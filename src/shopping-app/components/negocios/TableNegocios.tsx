@@ -1,4 +1,4 @@
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Negocios } from "@interfaces"
 
 
@@ -36,7 +36,8 @@ export const TableNegocios =( props:Props ) => {
                                     <PencilSquareIcon title="Editar negocio" cursor="pointer" onClick={ () => {
                                         props.setModify( negocio )
                                       //  props.onEditData( negocio )
-                                    }} className="w-6 h-6 text-blue-800"/>
+                                    }} className="w-6 h-6 text-blue-800 inline"/>
+                                    <XCircleIcon title="Eliminar negocio" cursor="pointer" className="ml-1 w-6 h-6 text-red-800 inline" onClick={ () => alert('Eliminar negocio')}/>
                                  </td>
                             </tr>
                         )
