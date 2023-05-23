@@ -50,7 +50,7 @@ export const useNegociosStore = () => {
         })
 
         const negocioRef = doc(FirebaseDB,'negocios', docRef);
-        await updateDoc(negocioRef, { data }) 
+        await updateDoc(negocioRef, {...data}) 
             .then(() => console.log('updated record'))
             .catch( error => console.log( error ))
 

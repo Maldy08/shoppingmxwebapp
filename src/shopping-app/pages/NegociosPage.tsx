@@ -9,7 +9,7 @@ import { ModalAddNegocio, TableNegocios } from "../components/negocios"
 
 export const NegociosPage = () => {
 
-    const { isLoading, negocios, startLoadingNegocios, startSavingNegocios,  } = useNegociosStore();
+    const { isLoading, negocios, startLoadingNegocios, startSavingNegocios,startUpdateNegocio  } = useNegociosStore();
     const { startLoadingCiudades, ciudades } = useCiudadesStore();
     const { startLoadingGiros, giros } = useGirosStore();
 
@@ -27,10 +27,14 @@ export const NegociosPage = () => {
     }, [])
 
     const saveData = async ( data: Negocios) => {
-        await startSavingNegocios( data ).then( () =>  {
-            setShowModal(false)
-            startLoadingNegocios()
-        });
+        if(!modify){
+            await startSavingNegocios( data )
+        } else {
+            await startUpdateNegocio( data )
+        }
+
+        setShowModal(false)
+        startLoadingNegocios()
     }
 
     const editData =  ( data:Negocios ) => {
