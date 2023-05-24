@@ -1,4 +1,5 @@
 
+import { BriefcaseIcon } from "@heroicons/react/24/outline";
 import { Ciudades, Giros, Negocios } from "@interfaces";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import MaskedInput from "react-text-mask";
@@ -39,8 +40,9 @@ export const ModalAddNegocio = ( props: Props ) => {
             {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                     {/*header*/}
-                    <div className="flex items-start justify-between p-6 border-b border-solid border-slate-200 rounded-t">
-                        <h3 className="text-2xl font-semibold">
+                    <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t">
+                        <h3 className="text-1xl font-semibold">
+                            
                           { props.modify? 'Modificar negocio' : 'Agregar negocio'}
                         </h3>
                     </div>
@@ -76,7 +78,7 @@ export const ModalAddNegocio = ( props: Props ) => {
                          >
                             {
                                 ({ handleChange }) => (
-                                    <Form className="space-y-6">
+                                    <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
                                                 <label htmlFor="nombre_empresa" className="block text-sm font-medium leading-6 text-gray-900">
