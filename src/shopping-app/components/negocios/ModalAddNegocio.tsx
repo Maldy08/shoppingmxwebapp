@@ -34,8 +34,8 @@ type Props = {
 export const ModalAddNegocio = ( props: Props ) => {
     return (
      <>
-        <div className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-full max-w-lg max-h-full">
+        <div tabIndex={-1}  aria-hidden="true" className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className=" relative w-full max-w-lg max-h-full">
             {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                     {/*header*/}
@@ -240,7 +240,7 @@ export const ModalAddNegocio = ( props: Props ) => {
                                         </div>
                                              <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                                                 <button
-                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                className="uppercase text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-2"
                                                     type="button"
                                                     onClick={ props.onShowModalClick }
                                                 >
@@ -264,6 +264,7 @@ export const ModalAddNegocio = ( props: Props ) => {
                 </div>
             </div>
         </div>
+        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
      </>
     );
 }
