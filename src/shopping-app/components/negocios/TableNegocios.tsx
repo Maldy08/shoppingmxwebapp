@@ -5,14 +5,15 @@ import { Negocios } from "@interfaces"
 type Props = {
 
     negocios : Negocios[]
-  //  onEditData: (data: Negocios) => void
+    onDeleteData: ( data: Negocios ) => Promise<void>
     setModify( data: Negocios ): void;
+
 }
 
 export const TableNegocios =( props:Props ) => {
     return (
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="border-bfont-medium dark:border-neutral-500">
+        <table className="w-full text-sm text-left">
+            <thead className="border-bfont-medium dark:border-neutral-500 bg-blue-700 text-white">
                 <tr>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">#</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NOMBRE</th>
@@ -37,7 +38,14 @@ export const TableNegocios =( props:Props ) => {
                                         props.setModify( negocio )
                                       //  props.onEditData( negocio )
                                     }} className="w-6 h-6 text-blue-800 inline"/>
-                                    <XCircleIcon title="Eliminar negocio" cursor="pointer" className="ml-1 w-6 h-6 text-red-800 inline" onClick={ () => alert('Eliminar negocio')}/>
+                                    <XCircleIcon 
+                                        title="Eliminar negocio" 
+                                        cursor="pointer" 
+                                        className="ml-1 w-6 h-6 text-red-800 inline" 
+                                        onClick={ () => {
+                                            props.onDeleteData( negocio )
+                                        }}
+                                    />
                                  </td>
                             </tr>
                         )

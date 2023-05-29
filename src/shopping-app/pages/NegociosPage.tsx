@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useCiudadesStore, useGirosStore, useNegociosStore } from "../../hooks";
-import { Negocios } from "@interfaces";
 import { MainLayout } from "../layout/MainLayout"
 import { ModalAddNegocio, TableNegocios } from "../components/negocios"
+import { Negocios } from "@interfaces";
+import { ModalDelete } from "../components";
 
 
 
 export const NegociosPage = () => {
 
-    const { isLoading, negocios, startLoadingNegocios, startSavingNegocios,startUpdateNegocio  } = useNegociosStore();
+    const { isLoading, negocios, startLoadingNegocios, startSavingNegocios,startUpdateNegocio, startDeleteNegocio  } = useNegociosStore();
     const { startLoadingCiudades, ciudades } = useCiudadesStore();
     const { startLoadingGiros, giros } = useGirosStore();
 
     const [showModal, setShowModal] = useState(false);
     const [modify, setModify] = useState(false);   
+    const [showmodalDelete, setShowmodalDelete] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     const [negocioMod, setNegocioMod] = useState<Negocios>()
+    const [file, setFile] = useState<Blob | ArrayBuffer>()
+    const [fileName, setFileName] = useState("")
     
     
     useEffect(() => {
@@ -26,9 +31,10 @@ export const NegociosPage = () => {
     
     }, [])
 
+
     const saveData = async ( data: Negocios) => {
         if(!modify){
-            await startSavingNegocios( data )
+            await startSavingNegocios( data,file!,fileName )
         } else {
             await startUpdateNegocio( data )
         }
@@ -37,18 +43,50 @@ export const NegociosPage = () => {
         startLoadingNegocios()
     }
 
+    const deleteData = async ( data:Negocios ) => {
+       
+        setShowmodalDelete(true)
+        if(isDelete){
+            await startLoadingNegocios()
+        }
+  
+
+        // await startDeleteNegocio( data )
+        //     .then( () => startLoadingNegocios() )
+    }
+
+    const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
+
+        setFile( e.target.files![0]);
+        setFileName(e.target.files![0].name)
+
+    }
+
     const editData =  ( data:Negocios ) => {
         setModify(true)
         setNegocioMod(data)
         setShowModal(true)
     }
+
+    const handleDelete = () => setShowmodalDelete(false)
+    const handleCancel = () => setShowmodalDelete(false)
+    
+
+
     
     
     return (
         <MainLayout>
             <div className="m-5">
+                { showmodalDelete && 
+                    <ModalDelete 
+                      onDelete={ deleteData} 
+                      handleCancel={ handleCancel }
+                    
+                    />
+                }
                
-                 { showModal && <div className=""><ModalAddNegocio modify={modify} negocios={ negocioMod } onSaveData={ saveData } giros={ giros } ciudades={ ciudades } onShowModalClick={ () => setShowModal( (prev) => !prev )}/></div> }  
+                 { showModal && <div className=""><ModalAddNegocio handleFileChange={handleFileChange} fileName={fileName} file={file!} modify={modify} negocios={ negocioMod } onSaveData={ saveData } giros={ giros } ciudades={ ciudades } onShowModalClick={ () => setShowModal( (prev) => !prev )}/></div> }  
                 <button onClick={ () => {
                     setShowModal( (prev) => !prev )
                     setModify(false)
@@ -64,7 +102,11 @@ export const NegociosPage = () => {
                         
                             <div className="overflow-hidden">
                             { !isLoading && 
-                                <TableNegocios  setModify={ editData } negocios={ negocios }  />
+                                <TableNegocios  
+                                  setModify={ editData } 
+                                 negocios={ negocios } 
+                                 onDeleteData={ deleteData }
+                                 />
                                 
                                 }
                             </div>

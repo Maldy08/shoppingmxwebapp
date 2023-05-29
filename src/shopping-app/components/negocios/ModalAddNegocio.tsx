@@ -1,9 +1,10 @@
 
-import { BriefcaseIcon } from "@heroicons/react/24/outline";
-import { Ciudades, Giros, Negocios } from "@interfaces";
+
+import { ChangeEvent } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import MaskedInput from "react-text-mask";
 import * as Yup from 'yup';
+import { Ciudades, Giros, Negocios } from "@interfaces";
 
 const initialValues: Negocios = {
     id:'0',
@@ -18,7 +19,7 @@ const initialValues: Negocios = {
     correo:'',
     telefono:'',
     direccion:'',
-    photoUrl:'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
+    photoUrl:''
 }
 
 const phoneNumberMask = [ "(", /[1-9]/, /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/ ];
@@ -30,7 +31,11 @@ type Props = {
     onSaveData: (data: Negocios) => Promise<void>
     modify:boolean
     negocios?: Negocios
+    file: Blob | ArrayBuffer, 
+    fileName: string
+    handleFileChange(e :ChangeEvent<HTMLInputElement>):void
 }
+
 
 export const ModalAddNegocio = ( props: Props ) => {
     return (
@@ -238,6 +243,30 @@ export const ModalAddNegocio = ( props: Props ) => {
 
                                                 /> 
                                                 <ErrorMessage name="direccion" component="span" className="block text-xs font-medium  text-red-500"/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label htmlFor="imagen" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Imagen 
+                                            </label>
+                                            <div className="mt-2">
+                                                {
+                                                    props.modify || props.negocios?.photoUrl == ''
+                                                    ?                                          
+                                                     <img 
+                                                        src={props.negocios?.photoUrl} alt="photo"
+                                                        className="rounded-lg h-20"
+
+                                                      />
+                                                    :
+                                                    <input type="file" name="imagen" id="imagen"accept="image/*"
+                                                    className="block w-full cursor-pointer p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    onChange={ (e :ChangeEvent<HTMLInputElement>) => {
+                                                       props.handleFileChange(e)
+                                                       props.fileName = e.target.files![0].name;
+                                                   }}
+                                                   />
+                                                }
                                             </div>
                                         </div>
                                              <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

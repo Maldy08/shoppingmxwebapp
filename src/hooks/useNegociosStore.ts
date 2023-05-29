@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
 
-import {  addDoc, collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
-import { onAddNewNegocio, onListNegocios, onModificarNegocio } from "../store/negocios/negociosSlice";
+import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { FirebaseDB, FirebaseStorage } from '../firebase/config';
 import { negociosCollection } from "../firebase/collections";
+import { onAddNewNegocio, onListNegocios, onModificarNegocio } from "../store/negocios/negociosSlice";
 import { Negocios } from "@interfaces";
-import { FirebaseDB } from '../firebase/config';
 
 
 
@@ -15,7 +16,7 @@ export const useNegociosStore = () => {
     const dispatch = useDispatch();
 
     const startLoadingNegocios = async () => {
-        const q = query(negociosCollection,orderBy("id"));
+        const q = query(negociosCollection,where('userid' ,'==', 'camv29@gmail.com'));
         const negocios = await getDocs(q);
         const listNegocios: Negocios[] = [];
         negocios.docs.forEach( ( negocioDoc ) => {
@@ -26,13 +27,17 @@ export const useNegociosStore = () => {
         dispatch( onListNegocios( listNegocios ));
     }
 
-    const startSavingNegocios = async ( data:Negocios ) => {
+    const startSavingNegocios = async ( data:Negocios, file:Blob | ArrayBuffer, fileName:string ) => {
         
         let id:number;
         negocios.length > 0 ? id = negocios.length+1 : id = 1;
         data.id = id.toString();
-        
-        await addDoc(collection(FirebaseDB, "negocios"),data)
+        const imageRef = ref(FirebaseStorage, `images/${fileName}`);
+        await uploadBytes(imageRef, file).catch( error => console.log( error ));
+        const publicImageUrl = await getDownloadURL(imageRef)
+        data.photoUrl = publicImageUrl;
+
+        await addDoc(collection(FirebaseDB, "negocios"),{userid:'camv29@gmail.com',...data})
             .then( () => {
                 dispatch( onAddNewNegocio(data));
             })
@@ -58,6 +63,20 @@ export const useNegociosStore = () => {
 
     }
 
+    const startDeleteNegocio = async ( data:Negocios ) => {
+        let docRef:any;
+        const q = query(negociosCollection,where("id","==",data.id));
+        const negocio = await getDocs(q);
+        negocio.docs.forEach( ( negocioDoc ) => {
+            docRef = negocioDoc.id
+        })
+
+        const productoRef = doc(FirebaseDB,'productos', docRef);
+        await deleteDoc(productoRef)
+            .then(() => console.log('deleted record'))
+            .catch( error => console.log( error ))
+    }
+
     const modificarNegocio = () => {
         dispatch( onModificarNegocio() );
     }
@@ -66,6 +85,7 @@ export const useNegociosStore = () => {
         startLoadingNegocios,
         startSavingNegocios,
         startUpdateNegocio,
+        startDeleteNegocio,
         modificarNegocio,
         negocios,
         isLoading,

@@ -1,0 +1,80 @@
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux"
+import { productosCollection } from "../firebase/collections";
+import { RootState } from "../store/store"
+import { Productos } from '@interfaces';
+import { onAddNewProducto, onListProductos } from "../store/productos/productosSlice";
+import { FirebaseDB } from "../firebase/config";
+
+
+export const useProductosStore = () => {
+
+    const { productos, isLoading } = useSelector( ( state: RootState ) => state.productos );
+    const dispatch = useDispatch();
+
+    const startLoadingProductos = async () => {
+        const q = query( productosCollection);
+        const productos = await getDocs(q);
+        const listProductos: Productos[] = [];
+        productos.docs.forEach( ( productoDoc ) => {
+            const producto = productoDoc.data();
+            listProductos.push( producto );
+        });
+
+        dispatch( onListProductos( listProductos ));
+    }
+
+    const startSavingProductos = async ( data:Productos ) => {
+        let id: number;
+        productos.length > 0 ? id = productos.length + 1 : id = 1;
+        data.id = id.toString();
+
+        await addDoc(collection(FirebaseDB, "productos"), { ...data })
+            .then( () => {
+                dispatch( onAddNewProducto( data ))
+            })
+            .catch( error => console.log(error));
+    }
+
+    const startUpdateProducto = async ( data:Productos ) => {
+
+        let docRef:any;
+        const q = query(productosCollection,where("id","==",data.id));
+        const producto = await getDocs(q);
+        producto.docs.forEach( ( productoDoc ) => {
+            docRef = productoDoc.id
+        })
+
+        const productoRef = doc(FirebaseDB,'productos', docRef);
+        await updateDoc(productoRef, {...data}) 
+            .then(() => console.log('updated record'))
+            .catch( error => console.log( error ))
+
+       // console.log(docRef);
+
+    }
+
+    const startDeleteProducto = async ( data:Productos ) => {
+        let docRef:any;
+        const q = query(productosCollection,where("id","==",data.id));
+        const producto = await getDocs(q);
+        producto.docs.forEach( ( productoDoc ) => {
+            docRef = productoDoc.id
+        })
+
+        const productoRef = doc(FirebaseDB,'productos', docRef);
+        await deleteDoc(productoRef)
+            .then(() => console.log('deleted record'))
+            .catch( error => console.log( error ))
+    }
+
+    return {
+        isLoading,
+        productos,
+        startLoadingProductos,
+        startSavingProductos,
+        startUpdateProducto,
+        startDeleteProducto,
+    }
+
+}
