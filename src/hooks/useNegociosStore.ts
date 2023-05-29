@@ -71,7 +71,7 @@ export const useNegociosStore = () => {
             docRef = negocioDoc.id
         })
 
-        const productoRef = doc(FirebaseDB,'productos', docRef);
+        const productoRef = doc(FirebaseDB,'negocios', docRef);
         await deleteDoc(productoRef)
             .then(() => console.log('deleted record'))
             .catch( error => console.log( error ))

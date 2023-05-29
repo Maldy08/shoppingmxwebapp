@@ -17,8 +17,8 @@ export const NegociosPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [modify, setModify] = useState(false);   
     const [showmodalDelete, setShowmodalDelete] = useState(false);
-    const [isDelete, setIsDelete] = useState(false);
     const [negocioMod, setNegocioMod] = useState<Negocios>()
+    const [negocioDelete, setNegocioDelete] =useState<Negocios>()
     const [file, setFile] = useState<Blob | ArrayBuffer>()
     const [fileName, setFileName] = useState("")
     
@@ -44,15 +44,16 @@ export const NegociosPage = () => {
     }
 
     const deleteData = async ( data:Negocios ) => {
-       
-        setShowmodalDelete(true)
-        if(isDelete){
-            await startLoadingNegocios()
-        }
-  
 
-        // await startDeleteNegocio( data )
-        //     .then( () => startLoadingNegocios() )
+        setNegocioDelete( data );
+        setShowmodalDelete(true)
+      
+    }
+
+    const confirmDeleteData = async ( data:Negocios ) => {
+        setShowmodalDelete(false)
+         await startDeleteNegocio( data )
+            .then( () => startLoadingNegocios() )
     }
 
     const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
@@ -68,11 +69,7 @@ export const NegociosPage = () => {
         setShowModal(true)
     }
 
-    const handleDelete = () => setShowmodalDelete(false)
     const handleCancel = () => setShowmodalDelete(false)
-    
-
-
     
     
     return (
@@ -80,7 +77,8 @@ export const NegociosPage = () => {
             <div className="m-5">
                 { showmodalDelete && 
                     <ModalDelete 
-                      onDelete={ deleteData} 
+                      negocio={ negocioDelete!}
+                      onDelete={ confirmDeleteData} 
                       handleCancel={ handleCancel }
                     
                     />
@@ -103,9 +101,10 @@ export const NegociosPage = () => {
                             <div className="overflow-hidden">
                             { !isLoading && 
                                 <TableNegocios  
+                                  onDeleteData={ deleteData }
                                   setModify={ editData } 
-                                 negocios={ negocios } 
-                                 onDeleteData={ deleteData }
+                                  negocios={ negocios } 
+                              
                                  />
                                 
                                 }

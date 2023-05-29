@@ -1,15 +1,17 @@
+import { Negocios } from "@interfaces";
 
 
-type Props<T> = {
+type Props = {
     // setOpenModal(open: boolean): void;
     //onShowModalClick(value:boolean):void
     //delete:boolean
-    onDelete: (data : T ) => Promise<void>;
+    negocio:Negocios
+    onDelete: (data : Negocios ) => Promise<void>;
     handleCancel: () => any;
 }
 
 
-export const ModalDelete = ( props: Props<any>) => {
+export const ModalDelete = ( props: Props ) => {
 
     return (
         <>
@@ -45,7 +47,8 @@ export const ModalDelete = ( props: Props<any>) => {
                                     <button
                                         className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                                         onClick={ () => {
-                                            props.onDelete( {} )
+                                           props.onDelete( props.negocio )
+                                           props.handleCancel()
                                         } }
                                     >
                                         Eliminar
