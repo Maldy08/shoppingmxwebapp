@@ -4,7 +4,7 @@ import { useCiudadesStore, useGirosStore, useNegociosStore } from "../../hooks";
 import { MainLayout } from "../layout/MainLayout"
 import { ModalAddNegocio, TableNegocios } from "../components/negocios"
 import { Negocios } from "@interfaces";
-import { ModalDelete } from "../components";
+import { ModalDelete, ModalDeleteGeneric } from "../components";
 
 
 
@@ -76,12 +76,17 @@ export const NegociosPage = () => {
         <MainLayout>
             <div className="m-5">
                 { showmodalDelete && 
-                    <ModalDelete 
-                      negocio={ negocioDelete!}
-                      onDelete={ confirmDeleteData} 
-                      handleCancel={ handleCancel }
+                    // <ModalDelete 
+                    //   negocio={ negocioDelete!}
+                    //   onDelete={ confirmDeleteData} 
+                    //   handleCancel={ handleCancel }
                     
-                    />
+                    // />
+                    <ModalDeleteGeneric 
+                        data={ negocioDelete! }
+                        onDelete={ confirmDeleteData }
+                        handleCancel={ handleCancel }
+                     />
                 }
                
                  { showModal && <div className=""><ModalAddNegocio handleFileChange={handleFileChange} fileName={fileName} file={file!} modify={modify} negocios={ negocioMod } onSaveData={ saveData } giros={ giros } ciudades={ ciudades } onShowModalClick={ () => setShowModal( (prev) => !prev )}/></div> }  
