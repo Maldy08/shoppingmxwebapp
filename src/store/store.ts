@@ -4,6 +4,8 @@ import { authSlice } from "./auth/authSlice";
 import { ciudadesSlice } from "./ciudades/ciudadesSlice";
 import { girosSlice } from "./giros/girosSlice";
 import { productosSlice } from "./productos/productosSlice";
+import { promocionesSlice } from "./promociones/promocionesSlice";
+import { cuponesSlice } from "./cupones/cuponesSlice";
 
 
 const store = configureStore( {
@@ -13,6 +15,8 @@ const store = configureStore( {
         ciudades: ciudadesSlice.reducer,
         giros: girosSlice.reducer,
         productos: productosSlice.reducer,
+        promociones: promocionesSlice.reducer,
+        cupones:cuponesSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
