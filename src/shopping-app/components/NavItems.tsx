@@ -1,4 +1,4 @@
-import { NewspaperIcon, HomeIcon, ShoppingBagIcon, BriefcaseIcon, RectangleGroupIcon } from "@heroicons/react/24/outline";
+import { NewspaperIcon, HomeIcon, ShoppingBagIcon, BriefcaseIcon, RectangleGroupIcon, BookmarkIcon } from "@heroicons/react/24/outline";
 
 export type NavItem = {
     label:string;
@@ -18,6 +18,11 @@ export const NavItems: NavItem[] = [
       icon: <BriefcaseIcon className="w-6 h-6" />,
     },
     {
+      label: "Categorias",
+      href: "/categorias",
+      icon: <BookmarkIcon className="w-6 h-6" />,
+    },
+    {
       label: "Productos",
       href: "/productos",
       icon: <ShoppingBagIcon className="w-6 h-6" />,
@@ -32,4 +37,5 @@ export const NavItems: NavItem[] = [
       href: "/cupones",
       icon: <RectangleGroupIcon className="w-6 h-6" />,
     },
+
   ];

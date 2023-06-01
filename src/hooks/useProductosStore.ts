@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { productosCollection } from "../firebase/collections";
 import { RootState } from "../store/store"
 import { Productos } from '@interfaces';
-import { onAddNewProducto, onListProductos } from "../store/productos/productosSlice";
+import { onAddNewProducto, onListProductos, onListProductosByNegocio } from "../store/productos/productosSlice";
 import { FirebaseDB, FirebaseStorage } from "../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 
 export const useProductosStore = () => {
 
-    const { productos, isLoading } = useSelector( ( state: RootState ) => state.productos );
+    const { productosByNegocio , productos, isLoading } = useSelector( ( state: RootState ) => state.productos );
     const dispatch = useDispatch();
 
     const startLoadingProductos = async () => {
@@ -25,7 +25,20 @@ export const useProductosStore = () => {
         dispatch( onListProductos( listProductos ));
     }
 
-    const startSavingProductos = async ( data:Productos,file:Blob | ArrayBuffer, fileName:string ) => {
+    const startLoadingProductosByNegocio = async ( negocioId:string ) => {
+        //console.log(negocioId)
+        const q = query(productosCollection,where("id_negocio","==",negocioId));
+        const productos = await getDocs(q);
+        const listProductos: Productos[] = [];
+        productos.docs.forEach( ( productoDoc ) => {
+            const producto = productoDoc.data();
+            listProductos.push( producto );
+        });
+
+        dispatch( onListProductosByNegocio( listProductos ))
+    }
+
+    const startSavingProductos = async ( data:Productos, file:Blob | ArrayBuffer, fileName:string ) => {
         let id: number;
         productos.length > 0 ? id = productos.length + 1 : id = 1;
         data.id = id.toString();
@@ -75,6 +88,8 @@ export const useProductosStore = () => {
     return {
         isLoading,
         productos,
+        productosByNegocio,
+        startLoadingProductosByNegocio,
         startLoadingProductos,
         startSavingProductos,
         startUpdateProducto,

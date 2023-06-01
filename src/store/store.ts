@@ -6,6 +6,7 @@ import { girosSlice } from "./giros/girosSlice";
 import { productosSlice } from "./productos/productosSlice";
 import { promocionesSlice } from "./promociones/promocionesSlice";
 import { cuponesSlice } from "./cupones/cuponesSlice";
+import { categoriasSlice } from "./categorias/categoriasSlice";
 
 
 const store = configureStore( {
@@ -17,6 +18,7 @@ const store = configureStore( {
         productos: productosSlice.reducer,
         promociones: promocionesSlice.reducer,
         cupones:cuponesSlice.reducer,
+        categorias: categoriasSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

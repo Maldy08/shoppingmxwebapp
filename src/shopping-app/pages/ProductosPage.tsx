@@ -53,7 +53,7 @@ const confirmDeleteData = async ( data:Productos ) => {
 }
 
 const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
-
+    
     setFile( e.target.files![0]);
     setFileName(e.target.files![0].name)
 
@@ -71,18 +71,12 @@ const handleCancel = () => setShowmodalDelete(false)
         <MainLayout>
             <div className="m-5">
             { showmodalDelete && 
-                    // <ModalDelete 
-                    //   negocio={ negocioDelete!}
-                    //   onDelete={ confirmDeleteData} 
-                    //   handleCancel={ handleCancel }
-                    
-                    // />
                     <ModalDeleteGeneric 
                         data={ productoDelete! }
                         onDelete={ confirmDeleteData }
                         handleCancel={ handleCancel }
                      />
-                }
+            }
                
                { showModal && <div className=""><ModalAddProducto handleFileChange={handleFileChange} fileName={fileName} file={file!} modify={modify} negocios={negocios} onSaveData={saveData} onShowModalClick={() => setShowModal((prev) => !prev)} producto={ productoMod }/></div> }  
               <button onClick={ () => {

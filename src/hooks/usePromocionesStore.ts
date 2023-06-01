@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "src/store/store"
+import { RootState } from "../store/store"
 import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
 import { promocionesCollection } from "../firebase/collections";
 import { Promociones } from "@interfaces";
 import { onListPromociones } from "../store/promociones/promocionesSlice";
 import { FirebaseDB } from "../firebase/config";
-import { onAddNewProducto } from "src/store/productos/productosSlice";
+import { onAddNewProducto } from "../store/productos/productosSlice";
 
 export const usePromocionesStore = () => {
 
-    const { promociones, isLoading } = useSelector( ( state: RootState ) => state.promociones );
+    const { promocion , promociones, isLoading } = useSelector( ( state: RootState ) => state.promociones );
     const dispatch = useDispatch();
 
     const startLoadingPromociones =async ( negocioId?:string ) => {
@@ -69,7 +69,8 @@ export const usePromocionesStore = () => {
         startUpdatePromocion,
         startDeletePromocion,
         isLoading,
-        promociones
+        promociones,
+        promocion
     }
 
 }

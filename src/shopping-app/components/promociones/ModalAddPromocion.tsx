@@ -14,25 +14,27 @@ const initialValues: Promociones = {
 }
 
 type Props = {
-    onShowModalClick():void
+    // onShowModalClick():void
     onSaveData: (data: Promociones) => Promise<void>
     modify:boolean
     promocion?: Promociones
     productos : Productos[]
     negocios: Negocios[]
-    file: Blob | ArrayBuffer, 
-    fileName: string
-    handleFileChange(e :ChangeEvent<HTMLInputElement>):void
+    handleChangeNegocio(e :ChangeEvent<HTMLInputElement>) :void
+    // file: Blob | ArrayBuffer, 
+    // fileName: string
+    // handleFileChange(e :ChangeEvent<HTMLInputElement>):void
 }
 
 export const ModalAddPromocion = (
     {
-         onShowModalClick,
+        //  onShowModalClick,
          onSaveData,
          modify,
          promocion,
          productos,
-         negocios
+         negocios,
+         handleChangeNegocio
         // file,
         // fileName,
         // handleFileChange
@@ -57,11 +59,11 @@ export const ModalAddPromocion = (
                                 onSubmit={ ( values : Promociones )=> {
                                     onSaveData( values )
                                 }}
-                                validationSchema={{}}
+                           
 
                             >
                              {
-                                ({ handleChange }) => (
+                                ({ setFieldValue  }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -72,15 +74,19 @@ export const ModalAddPromocion = (
                                                     <Field
                                                         name="id_negocio"
                                                         as="select"
+                                                        onChange= { (e:ChangeEvent<HTMLInputElement>) => {
+                                                            handleChangeNegocio(e)
+                                                            setFieldValue('id_negocio',e.target.value)
+                                                        } }
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
                                                     > 
-                                                    <option disabled value="">(Selecciona un producto)</option>
+                                                    <option disabled value="">(Selecciona un negocio)</option>
 
                                                         {
                                                         
                                                            negocios.map(({ id,nombre_empresa }) => (
-                                                            <option key={ id } value={ id }>{ nombre_empresa } </option>
+                                                            <option key={ id } value={ nombre_empresa }>{ nombre_empresa } </option>
                                                             ))
                                                         }
                                                     </Field>
@@ -89,69 +95,47 @@ export const ModalAddPromocion = (
                                                 </div>
                                             </div>
 
-                                            <div className="">
+                                             <div className="">
                                                 <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Descripcion Producto
+                                                    Producto
                                                 </label>
                                                 <div className="mt-2">
                                                     <Field
-                                                        name="descripcion"
-                                                        type="text"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            name="productos"
+                                                            as="select"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                           
+                                                        > 
+                                                        <option disabled value="">(Selecciona un producto)</option>
 
-                                                    />
-                                                    <ErrorMessage name="descripcion" component="span" className="block text-xs font-medium  text-red-500" />
+                                                            {
+                                                            
+                                                            productos.map(({ id,descripcion }) => (
+                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                ))
+                                                            }
+                                                        </Field>
+                                                    <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500" />
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-4">
+                                        {/* <div className="grid grid-cols-2 gap-4">
                                             <div className="">
-                                                    <label htmlFor="precio" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Precio
+                                                    <label htmlFor="descuento" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Descuento
                                                     </label>
                                                     <div className="mt-2">
-                                                    <Field name="precio">
-                                                        {
-                                                            ({ field  }: any) => <CurrencyInput
-                                                                { ...field }
-                                                                type="text"
-                                                                id="precio"
-                                                              
-                                                                onChange={ handleChange }
+                                                    <Field 
+                                                        name="descuento"
+                                                        type="number"
+                                                    />
 
-                                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                                />
-                                                        }
-                                                    </Field>
-                                                        <ErrorMessage name="precio" component="span" className="block text-xs font-medium  text-red-500" />
+                                                        <ErrorMessage name="descuento" component="span" className="block text-xs font-medium  text-red-500" />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <label htmlFor="imagen" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Imagen 
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        {
-                                                            props.modify || props.producto?.photoUrl == ''
-                                                            ?                                          
-                                                            <img 
-                                                                src={props.producto?.photoUrl} alt="photo"
-                                                                className="rounded-lg h-20"
 
-                                                            />
-                                                            :
-                                                            <input type="file" name="imagen" id="imagen"accept="image/*"
-                                                            className="block w-full cursor-pointer p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                            onChange={ (e :ChangeEvent<HTMLInputElement>) => {
-                                                            props.handleFileChange(e)
-                                                            props.fileName = e.target.files![0].name;
-                                                        }}
-                                                        />
-                                                        }
-                                                    </div>
-                                                </div>
-                                        </div>
+                                        </div> */}
 
 
 
@@ -159,7 +143,7 @@ export const ModalAddPromocion = (
                                                 <button
                                                 className="uppercase text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-2"
                                                     type="button"
-                                                    onClick={ props.onShowModalClick }
+                                                   // onClick={ onShowModalClick }
                                                 >
                                                     Cerrar
                                                 </button>
@@ -167,7 +151,7 @@ export const ModalAddPromocion = (
                                                     className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
                                                     type="submit"
                                                 >
-                                                    { props.modify ? 'Modificar' : 'Guardar' }
+                                                    { modify ? 'Modificar' : 'Guardar' }
                                                 </button>
                                             </div>
                                     </Form>

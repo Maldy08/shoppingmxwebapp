@@ -11,7 +11,8 @@ export const productosSlice = createSlice({
     initialState: {
         isLoading:true,
         producto:producto,
-        productos:productos
+        productos:productos,
+        productosByNegocio: productos
     },
     reducers : {
         onListProductos: ( state , { payload = [] }) => {
@@ -23,10 +24,14 @@ export const productosSlice = createSlice({
             state.isLoading = false,
             state.producto = payload
         },
+        onListProductosByNegocio: ( state, { payload = [] }) => {
+            state.isLoading = false,
+            state.productosByNegocio = payload;
+        }
 
 
     }
 });
 
-export const { onListProductos, onAddNewProducto } = productosSlice.actions;
+export const { onListProductos, onListProductosByNegocio, onAddNewProducto } = productosSlice.actions;
 
