@@ -15,8 +15,9 @@ export const useNegociosStore = () => {
     const { negocios, isLoading, isModificarNegocio } = useSelector( (state: RootState) => state.negocios ); 
     const dispatch = useDispatch();
 
-    const startLoadingNegocios = async () => {
-        const q = query(negociosCollection,where('userid' ,'==', 'camv29@gmail.com'));
+    const startLoadingNegocios = async ( userid?:string) => {
+        userid = "camv29@gmail.com";
+        const q = query(negociosCollection,where('userid' ,'==', userid));
         const negocios = await getDocs(q);
         const listNegocios: Negocios[] = [];
         negocios.docs.forEach( ( negocioDoc ) => {
@@ -27,17 +28,18 @@ export const useNegociosStore = () => {
         dispatch( onListNegocios( listNegocios ));
     }
 
-    const startSavingNegocios = async ( data:Negocios, file:Blob | ArrayBuffer, fileName:string ) => {
+    const startSavingNegocios = async ( data:Negocios, file:Blob | ArrayBuffer, fileName:string, userid?:string ) => {
         
+        userid = "camv29@gmail.com";
         let id:number;
-        negocios.length > 0 ? id = negocios.length+1 : id = 1;
+        negocios.length > 0 ? id = negocios.length + 1 : id = 1;
         data.id = id.toString();
-        const imageRef = ref(FirebaseStorage, `images/${fileName}`);
+        const imageRef = ref(FirebaseStorage, `images/negocios/${fileName}`);
         await uploadBytes(imageRef, file).catch( error => console.log( error ));
         const publicImageUrl = await getDownloadURL(imageRef)
         data.photoUrl = publicImageUrl;
 
-        await addDoc(collection(FirebaseDB, "negocios"),{userid:'camv29@gmail.com',...data})
+        await addDoc(collection(FirebaseDB, "negocios"),{userid: userid ,...data})
             .then( () => {
                 dispatch( onAddNewNegocio(data));
             })

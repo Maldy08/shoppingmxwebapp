@@ -4,6 +4,7 @@ import { Productos } from "@interfaces";
 import { useNegociosStore, useProductosStore } from '../../hooks';
 import { ModalAddProducto, TableProductos } from "../components/productos";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { ModalDeleteGeneric } from "../components";
 
 
 export const ProductosPage = () => {
@@ -13,7 +14,9 @@ const {  negocios, startLoadingNegocios } = useNegociosStore();
 const { startLoadingProductos , startSavingProductos, productos, isLoading, startUpdateProducto, startDeleteProducto } = useProductosStore();
 const [showModal, setShowModal] = useState(false);
 const [modify, setModify] = useState(false);   
+const [showmodalDelete, setShowmodalDelete] = useState(false);
 const [productoMod, setProductoMod] = useState<Productos>()
+const [productoDelete, setProductoDelete] =useState<Productos>()
 const [file, setFile] = useState<Blob | ArrayBuffer>()
 const [fileName, setFileName] = useState("")
 
@@ -38,7 +41,14 @@ useEffect(() => {
 }
 
 const deleteData = async ( data:Productos) => {
-    await startDeleteProducto( data )
+
+    setProductoDelete( data );
+    setShowmodalDelete(true)
+}
+
+const confirmDeleteData = async ( data:Productos ) => {
+    setShowmodalDelete(false)
+     await startDeleteProducto( data )
         .then( () => startLoadingProductos() )
 }
 
@@ -55,9 +65,24 @@ const editData =  ( data:Productos ) => {
     setShowModal(true)
 }
 
+const handleCancel = () => setShowmodalDelete(false)
+
     return (
         <MainLayout>
             <div className="m-5">
+            { showmodalDelete && 
+                    // <ModalDelete 
+                    //   negocio={ negocioDelete!}
+                    //   onDelete={ confirmDeleteData} 
+                    //   handleCancel={ handleCancel }
+                    
+                    // />
+                    <ModalDeleteGeneric 
+                        data={ productoDelete! }
+                        onDelete={ confirmDeleteData }
+                        handleCancel={ handleCancel }
+                     />
+                }
                
                { showModal && <div className=""><ModalAddProducto handleFileChange={handleFileChange} fileName={fileName} file={file!} modify={modify} negocios={negocios} onSaveData={saveData} onShowModalClick={() => setShowModal((prev) => !prev)} producto={ productoMod }/></div> }  
               <button onClick={ () => {

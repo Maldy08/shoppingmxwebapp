@@ -29,13 +29,9 @@ export const ModalDeleteGeneric = <T extends object>( props: Props<T>) => {
                             </div>
                             <div className="mt-2 text-center sm:ml-4 sm:text-left">
                                 <h4 className="text-lg font-medium text-gray-800">
-                                    Delete account ?
+                                 ¿ Esta seguro que desea eliminar este registro ?
                                 </h4>
-                                <p className="mt-2 text-[15px] leading-relaxed text-gray-500">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                </p>
+ 
                                 <div className="items-center gap-2 mt-3 sm:flex">
                                     <button
                                         className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
@@ -57,7 +53,9 @@ export const ModalDeleteGeneric = <T extends object>( props: Props<T>) => {
                         </div>
                     </div>
                 </div>
+               
             </div>
+           
         </>
     )
 }

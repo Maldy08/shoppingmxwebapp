@@ -4,7 +4,8 @@ import { productosCollection } from "../firebase/collections";
 import { RootState } from "../store/store"
 import { Productos } from '@interfaces';
 import { onAddNewProducto, onListProductos } from "../store/productos/productosSlice";
-import { FirebaseDB } from "../firebase/config";
+import { FirebaseDB, FirebaseStorage } from "../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 
 export const useProductosStore = () => {
@@ -24,11 +25,14 @@ export const useProductosStore = () => {
         dispatch( onListProductos( listProductos ));
     }
 
-    const startSavingProductos = async ( data:Productos ) => {
+    const startSavingProductos = async ( data:Productos,file:Blob | ArrayBuffer, fileName:string ) => {
         let id: number;
         productos.length > 0 ? id = productos.length + 1 : id = 1;
         data.id = id.toString();
-
+        const imageRef = ref( FirebaseStorage, `images/productos/${fileName}`)
+        await uploadBytes(imageRef, file).catch( error => console.log( error ));
+        const publicImageUrl = await getDownloadURL(imageRef)
+        data.photoUrl = publicImageUrl;
         await addDoc(collection(FirebaseDB, "productos"), { ...data })
             .then( () => {
                 dispatch( onAddNewProducto( data ))
