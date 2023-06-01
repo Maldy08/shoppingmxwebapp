@@ -50,10 +50,24 @@ export const usePromocionesStore = () => {
             .catch( error => console.log( error ))
     }
 
+    const startDeletePromocion =async ( data:Promociones ) => {
+        let docRef:any;
+        const q = query(promocionesCollection,where("id",'==',data.id));
+        const promocion = await getDocs(q);
+        promocion.docs.forEach( (promocionDoc ) => {
+            docRef = promocionDoc.id
+        })
+        const promocionRef = doc(FirebaseDB,'promociones', docRef );
+        await deleteDoc(promocionRef)
+             .then(() => console.log('deleted record'))
+             .catch( error => console.log( error ))
+    }
+
     return {
         startLoadingPromociones,
         startSavingPromociones,
         startUpdatePromocion,
+        startDeletePromocion,
         isLoading,
         promociones
     }

@@ -8,4 +8,5 @@ export interface Promociones {
     descuento:Number
     vigencia:Date
     disponibilidad:number
+    photoUrl:string
 } 

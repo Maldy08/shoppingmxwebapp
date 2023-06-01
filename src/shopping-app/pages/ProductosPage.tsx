@@ -30,7 +30,7 @@ useEffect(() => {
 
   const saveData = async ( data: Productos) => {
     if(!modify){
-        await startSavingProductos( data )
+        await startSavingProductos( data,file!,fileName )
        console.log( data );
     } else {
         await startUpdateProducto( data )
