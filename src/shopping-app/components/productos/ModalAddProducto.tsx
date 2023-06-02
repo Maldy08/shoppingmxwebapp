@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
 import * as Yup from 'yup';
-import { Negocios, Productos } from "@interfaces";
+import { Categorias, Negocios, Productos } from "@interfaces";
 import CurrencyInput from "./CurrencyInput";
 
 const initialValues: Productos = {
@@ -22,6 +22,7 @@ type Props = {
     modify:boolean
     producto?: Productos
     negocios : Negocios[]
+    categorias:Categorias[]
     file: Blob | ArrayBuffer, 
     fileName: string
     handleFileChange(e :ChangeEvent<HTMLInputElement>):void

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
 import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
-import { categoriasCollection, promocionesCollection } from "../firebase/collections";
+import { categoriasCollection } from "../firebase/collections";
 import { Categorias } from "@interfaces";
 
 import { FirebaseDB } from "../firebase/config";
@@ -29,7 +29,7 @@ export const useCategoriasStore = () => {
         categorias.length > 0 ? id = categorias.length + 1 : id = 1;
         data.id = id.toString();
 
-        await addDoc(collection(FirebaseDB, "categorias"), { data })
+        await addDoc(collection(FirebaseDB, "categorias"), { ...data })
             .then( () => {
                 dispatch( onAddNewCategoria( data ));
             })
@@ -38,7 +38,7 @@ export const useCategoriasStore = () => {
 
     const startUpdateCategoria = async ( data:Categorias ) => {
         let docRef:any;
-        const q = query(promocionesCollection,where("id",'==',data.id));
+        const q = query(categoriasCollection,where("id",'==',data.id));
         const categoria = await getDocs(q);
         categoria.docs.forEach( (categoriaDoc ) => {
             docRef = categoriaDoc.id

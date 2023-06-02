@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { MainLayout } from "../layout/MainLayout"
 import { Productos } from "@interfaces";
-import { useNegociosStore, useProductosStore } from '../../hooks';
+import { useCategoriasStore, useNegociosStore, useProductosStore } from '../../hooks';
 import { ModalAddProducto, TableProductos } from "../components/productos";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { ModalDeleteGeneric } from "../components";
@@ -10,8 +10,16 @@ import { ModalDeleteGeneric } from "../components";
 export const ProductosPage = () => {
 
 
+    const { startLoadingProductos , 
+        startSavingProductos, 
+        productos, 
+        isLoading, 
+        startUpdateProducto, 
+        startDeleteProducto 
+    } = useProductosStore();
+    
 const {  negocios, startLoadingNegocios } = useNegociosStore();
-const { startLoadingProductos , startSavingProductos, productos, isLoading, startUpdateProducto, startDeleteProducto } = useProductosStore();
+const { categorias, startLoadingCategorias } = useCategoriasStore();
 const [showModal, setShowModal] = useState(false);
 const [modify, setModify] = useState(false);   
 const [showmodalDelete, setShowmodalDelete] = useState(false);
@@ -25,6 +33,7 @@ const [fileName, setFileName] = useState("")
 useEffect(() => {
     startLoadingProductos();
     startLoadingNegocios();
+    startLoadingCategorias();
  
   }, [])
 
@@ -78,7 +87,21 @@ const handleCancel = () => setShowmodalDelete(false)
                      />
             }
                
-               { showModal && <div className=""><ModalAddProducto handleFileChange={handleFileChange} fileName={fileName} file={file!} modify={modify} negocios={negocios} onSaveData={saveData} onShowModalClick={() => setShowModal((prev) => !prev)} producto={ productoMod }/></div> }  
+               { showModal && 
+               <div className="">
+                    <ModalAddProducto 
+                        handleFileChange={handleFileChange} 
+                        fileName={fileName} 
+                        file={file!} 
+                        modify={modify} 
+                        negocios={negocios}
+                        categorias={ categorias }
+                        onSaveData={saveData} 
+                        onShowModalClick={() => setShowModal((prev) => !prev)} 
+                        producto={ productoMod }
+                    />
+                </div> }  
+             
               <button onClick={ () => {
                   setShowModal( (prev) => !prev )
                   setModify(false)

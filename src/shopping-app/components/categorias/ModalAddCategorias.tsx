@@ -29,7 +29,7 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                     <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t">
                         <h3 className="text-1xl font-semibold">
                             
-                          { modify? 'Modificar producto' : 'Agregar producto'}
+                          { modify? 'Modificar categoria' : 'Agregar categoria'}
                         </h3>
                     </div>
                     {/*body*/}    
@@ -53,11 +53,11 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                             {
                                 ({  }) => (
                                     <Form className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-4">
 
                                             <div className="">
                                                 <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Descripcion Producto
+                                                    Descripcion Categoria
                                                 </label>
                                                 <div className="mt-2">
                                                     <Field
