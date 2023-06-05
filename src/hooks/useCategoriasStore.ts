@@ -29,7 +29,7 @@ export const useCategoriasStore = () => {
         categorias.length > 0 ? id = categorias.length + 1 : id = 1;
         data.id = id.toString();
 
-        await addDoc(collection(FirebaseDB, "categorias"), { ...data })
+        await addDoc(collection(FirebaseDB, "categorias"), {'negocioid': '1', ...data })
             .then( () => {
                 dispatch( onAddNewCategoria( data ));
             })
