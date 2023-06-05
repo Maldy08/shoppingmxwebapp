@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useNegociosStore, useProductosStore, usePromocionesStore } from "../../hooks"
+import { useCategoriasStore, useNegociosStore, useProductosStore, usePromocionesStore } from "../../hooks"
 import { ModalAddPromocion } from "../components/promociones";
 import { MainLayout } from "../layout/MainLayout"
 import { Promociones } from "@interfaces";
@@ -7,15 +7,19 @@ import { Promociones } from "@interfaces";
 
 export const PromocionesPage = () => {
     const { isLoading: isLoadingNegocios, negocios, startLoadingNegocios } = useNegociosStore();
-    const { isLoading: isLoadingProductos, productos, productosByNegocio , startLoadingProductos, startLoadingProductosByNegocio } = useProductosStore()
+    const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio } = useProductosStore()
+    const {isLoading: isLoadingCategorias, categorias, startLoadingCategorias } = useCategoriasStore()
     const {  } = usePromocionesStore()
     const [promocionMod, setPromocionMod] = useState<Promociones>()
     const [changeNegocio, setChangeNegocio] = useState('')
+    const [showProductos, setShowProductos] = useState(false)
+    const [showCategorias, setShowCategorias] = useState(false)    
     
     useEffect(() => {
         //startLoadingProductos();\
         //startLoadingProductosByNegocio("Empresa de prueba")
         startLoadingNegocios();
+        startLoadingCategorias()
      
       }, [])
 
@@ -44,15 +48,20 @@ export const PromocionesPage = () => {
             <div className="container mt-5">
                 <div>
                     {
-                        !isLoadingNegocios && !isLoadingProductos
+                        !isLoadingNegocios && !isLoadingProductos && !isLoadingCategorias
                           &&
                           <ModalAddPromocion
                                 negocios={ negocios }
                                 productos={ productosByNegocio }
                                 promocion={ promocionMod }
+                                categorias={ categorias }
                                 modify={false}
                                 onSaveData={ saveData}
                                 handleChangeNegocio={ handleChangeNegocio }
+                                showProducts={ showProductos }
+                                onShowProductsClick={ () => setShowProductos( prev => !prev)}
+                                showCategorias={ showCategorias }
+                                onShowCategoriasClick={ () => setShowCategorias(prev => !prev)}
   
                           />
                     }

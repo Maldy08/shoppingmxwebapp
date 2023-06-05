@@ -10,6 +10,7 @@ import CurrencyInput from "./CurrencyInput";
 const initialValues: Productos = {
     id:'0',
     id_negocio: '',
+    id_categoria:'',
     descripcion: '',
     precio: 0,
     photoUrl: '',
@@ -32,7 +33,8 @@ type Props = {
 export const ModalAddProducto = ( props: Props ) => {
     return (
      <>
-        <div tabIndex={-1}  aria-hidden="true" className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div tabIndex={-1}  aria-hidden="true" className="w-full justify-center items-center flex overflow-x-hidden 
+            overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className=" relative w-full max-w-lg max-h-full">
             {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
@@ -77,7 +79,8 @@ export const ModalAddProducto = ( props: Props ) => {
                                                     <Field
                                                         name="id_negocio"
                                                         as="select"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
+                                                         placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
                                                     > 
                                                     <option disabled value="">(Selecciona un negocio)</option>
@@ -102,7 +105,9 @@ export const ModalAddProducto = ( props: Props ) => {
                                                     <Field
                                                         name="descripcion"
                                                         type="text"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                                                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
+                                                         sm:text-sm sm:leading-6"
 
                                                     />
                                                     <ErrorMessage name="descripcion" component="span" className="block text-xs font-medium  text-red-500" />
@@ -116,23 +121,51 @@ export const ModalAddProducto = ( props: Props ) => {
                                                         Precio
                                                     </label>
                                                     <div className="mt-2">
-                                                    <Field name="precio">
-                                                        {
-                                                            ({ field  }: any) => <CurrencyInput
-                                                                { ...field }
-                                                                type="text"
-                                                                id="precio"
-                                                              
-                                                                onChange={ handleChange }
-
-                                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                                />
-                                                        }
-                                                    </Field>
-                                                        <ErrorMessage name="precio" component="span" className="block text-xs font-medium  text-red-500" />
+                                                        <Field name="precio">
+                                                            {
+                                                                ({ field  }: any) => <CurrencyInput
+                                                                    { ...field }
+                                                                    type="text"
+                                                                    id="precio"
+                                                                    onChange={ handleChange }
+                                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                                                                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                                                         focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                                    />
+                                                            }
+                                                        </Field>
+                                                        <ErrorMessage name="precio" component="span" className="block text-xs font-medium text-red-500" />
                                                     </div>
                                                 </div>
-                                                <div>
+                                                <div className="">
+                                                    <label htmlFor="categoria" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Categoria
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Field
+                                                            name="id_categoria"
+                                                            as="select"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                                                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                                                 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+
+                                                        > 
+                                                        <option disabled value="">(Selecciona una categoria)</option>
+                                                            {
+                                                            
+                                                            props.categorias.map(({ id, descripcion}) => (
+                                                                <option key={ id } value={ descripcion }>{ descripcion } </option>
+                                                                ))
+                                                            }
+                                                        </Field>
+                                                        <ErrorMessage name="id_negocio" component="span" className="block text-xs font-medium text-red-500"/>
+                                                        
+                                                    </div>
+                                                </div>
+      
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-4">
+                                               <div>
                                                     <label htmlFor="imagen" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Imagen 
                                                     </label>
@@ -147,7 +180,9 @@ export const ModalAddProducto = ( props: Props ) => {
                                                             />
                                                             :
                                                             <input type="file" name="imagen" id="imagen"accept="image/*"
-                                                            className="block w-full cursor-pointer p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            className="block w-full cursor-pointer p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm 
+                                                                 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                                                 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             onChange={ (e :ChangeEvent<HTMLInputElement>) => {
                                                             props.handleFileChange(e)
                                                             props.fileName = e.target.files![0].name;
@@ -156,20 +191,26 @@ export const ModalAddProducto = ( props: Props ) => {
                                                         }
                                                     </div>
                                                 </div>
+
                                         </div>
 
 
 
                                              <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                                                 <button
-                                                className="uppercase text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-2"
+                                                className="uppercase text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none
+                                                 focus:ring-red-300 font-medium rounded-lg 
+                                                text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700
+                                                 dark:focus:ring-red-800 ml-2"
                                                     type="button"
                                                     onClick={ props.onShowModalClick }
                                                 >
                                                     Cerrar
                                                 </button>
                                                 <button
-                                                    className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
+                                                    className="uppercase text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
+                                                     focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center
+                                                     dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2"
                                                     type="submit"
                                                 >
                                                     { props.modify ? 'Modificar' : 'Guardar' }

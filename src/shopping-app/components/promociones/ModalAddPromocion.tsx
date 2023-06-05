@@ -1,16 +1,20 @@
-import { Negocios, Productos, Promociones } from "@interfaces"
-import { ErrorMessage, Field, Form, Formik } from "formik"
 import { ChangeEvent } from "react"
+import DatePicker  from "react-datepicker";
+
+import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
+import { ErrorMessage, Field, Form, Formik } from "formik"
+import "react-datepicker/dist/react-datepicker.css";
 
 const initialValues: Promociones = {
     id:'0',
     id_negocio: '',
     descuento:0,
-    disponibilidad:0,
+    disponible:true,
     fecha_creacion: new Date(),
     photoUrl:'',
     productos:[],
-    vigencia: new Date()
+    vigencia: new Date(),
+    descripcion: ''
 }
 
 type Props = {
@@ -20,7 +24,12 @@ type Props = {
     promocion?: Promociones
     productos : Productos[]
     negocios: Negocios[]
+    categorias: Categorias[]
     handleChangeNegocio(e :ChangeEvent<HTMLInputElement>) :void
+    showProducts:boolean
+    onShowProductsClick():void
+    showCategorias:boolean
+    onShowCategoriasClick():void
     // file: Blob | ArrayBuffer, 
     // fileName: string
     // handleFileChange(e :ChangeEvent<HTMLInputElement>):void
@@ -33,8 +42,13 @@ export const ModalAddPromocion = (
          modify,
          promocion,
          productos,
+         categorias,
          negocios,
-         handleChangeNegocio
+         handleChangeNegocio,
+         showProducts,
+         onShowProductsClick,
+         showCategorias,
+         onShowCategoriasClick,
         // file,
         // fileName,
         // handleFileChange
@@ -63,7 +77,7 @@ export const ModalAddPromocion = (
 
                             >
                              {
-                                ({ setFieldValue  }) => (
+                                ({ setFieldValue, values  }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -97,10 +111,23 @@ export const ModalAddPromocion = (
 
                                              <div className="">
                                                 <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Producto
+                                                    Vigencia
                                                 </label>
+
                                                 <div className="mt-2">
-                                                    <Field
+
+                                                    <DatePicker 
+                                                        name="fecha"
+                                                        title="fecha"
+                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        dateFormat="dd/MM/yyyy"
+                                                        // disabled={isSubmitting}
+                                                        selected={ values.vigencia } 
+                                                        onChange={
+                                                            ( date:any ) => setFieldValue('vigencia', date)
+                                                        }
+                                                    />
+                                                    {/* <Field
                                                             name="productos"
                                                             as="select"
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -114,11 +141,83 @@ export const ModalAddPromocion = (
                                                                 <option key={ id } value={ id }>{ descripcion } </option>
                                                                 ))
                                                             }
-                                                        </Field>
+                                                        </Field> */}
                                                     <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500" />
                                                 </div>
                                             </div> 
                                         </div>
+
+               
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="flex items-center mb-4">
+                                                <input disabled={showCategorias} onChange={ onShowProductsClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                                <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> productos</label>
+
+                                                <input disabled={showProducts} onChange={ onShowCategoriasClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 ml-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                                <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> categorias</label>
+                                            </div>
+
+                                            { showProducts &&
+                                            
+                                                <div className="">
+                                                    <label htmlFor="id_negocio" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Productos
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Field
+                                                            name="productos"
+                                                            as="select"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+
+                                                        > 
+                                                        <option disabled value="">(Selecciona un producto)</option>
+
+                                                            {
+                                                            
+                                                            productos.map(({ id,descripcion }) => (
+                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                ))
+                                                            }
+                                                        </Field>
+                                                        <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500"/>
+                                                            
+                                                    </div>
+                                                    <button type="reset">+</button>
+                                                </div>
+                                            }
+                                            {
+                                                showCategorias &&
+                                                <div className="">
+                                                    <label htmlFor="id_negocio" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Categorias
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Field
+                                                            name="categorias"
+                                                            as="select"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+
+                                                        > 
+                                                        <option disabled value="">(Selecciona una categoria)</option>
+
+                                                            {
+                                                            
+                                                            categorias.map(({ id,descripcion }) => (
+                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                ))
+                                                            }
+                                                        </Field>
+                                                        <ErrorMessage name="categorias" component="span" className="block text-xs font-medium  text-red-500"/>
+                                                            
+                                                    </div>
+                                                </div>    
+                                            }
+         
+                                        </div>
+
+                                        
+   
 
                                         {/* <div className="grid grid-cols-2 gap-4">
                                             <div className="">

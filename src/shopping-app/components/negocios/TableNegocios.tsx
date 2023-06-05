@@ -13,7 +13,7 @@ type Props = {
 export const TableNegocios =( props:Props ) => {
     return (
         <table className="w-full text-sm text-left">
-            <thead className="border-bfont-medium dark:border-neutral-500 bg-blue-700 text-white">
+            <thead className="border-bfont-medium dark:border-neutral-500">
                 <tr>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">#</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NOMBRE</th>

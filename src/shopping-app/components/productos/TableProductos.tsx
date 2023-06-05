@@ -18,6 +18,7 @@ export const TableProductos =( props:Props ) => {
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">DESCRIPCION</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">PRECIO</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NEGOCIO</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">CATEGORIA</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ACCIONES</th>
                 </tr>
             </thead>
@@ -32,6 +33,7 @@ export const TableProductos =( props:Props ) => {
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ producto.descripcion }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ producto.precio }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ producto.id_negocio }</td>
+                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ producto.id_categoria }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">
                                     <PencilSquareIcon title="Editar producto" cursor="pointer" onClick={ () => {
                                         props.setModify( producto )

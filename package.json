@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
+    "@types/react-datepicker": "^4.11.2",
     "@types/react-dom": "^18.0.11",
     "@types/react-text-mask": "^5.4.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",

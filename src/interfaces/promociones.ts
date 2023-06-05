@@ -7,6 +7,7 @@ export interface Promociones {
     fecha_creacion:Date
     descuento:Number
     vigencia:Date
-    disponibilidad:number
+    disponible:boolean
+    descripcion:string
     photoUrl:string
 } 
