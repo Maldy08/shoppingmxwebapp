@@ -1,19 +1,19 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
-import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
+import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where, orderBy } from "firebase/firestore";
 import { categoriasCollection } from "../firebase/collections";
 import { Categorias } from "@interfaces";
 
 import { FirebaseDB } from "../firebase/config";
-import { onListCategorias, onAddNewCategoria  } from "../store/categorias/categoriasSlice";
+import { onListCategorias, onAddNewCategoria, onListCategoriasByNegocio  } from "../store/categorias/categoriasSlice";
 
 export const useCategoriasStore = () => {
 
-    const { categoria , categorias, isLoading } = useSelector( ( state: RootState ) => state.categorias );
+    const { categoria , categorias, categoriasByNegocio ,isLoading } = useSelector( ( state: RootState ) => state.categorias );
     const dispatch = useDispatch();
 
     const startLoadingCategorias = async () => {
-        const q = query(categoriasCollection);
+        const q = query(categoriasCollection, orderBy('id'));
         const categorias = await getDocs(q);
         const listCategorias: Categorias[] = [];
         categorias.docs.forEach( ( categoriaDoc ) => {
@@ -24,12 +24,24 @@ export const useCategoriasStore = () => {
         dispatch( onListCategorias( listCategorias ));
     }
 
+    const startLoadingCategoriasByNegocio = async (negocioID:string) => {
+        const q = query(categoriasCollection, where('negocioId','==', negocioID ));
+        const categorias = await getDocs(q);
+        const listCategorias: Categorias[] = [];
+        categorias.docs.forEach( ( categoriaDoc ) => {
+            const categoria = categoriaDoc.data();
+            listCategorias.push(categoria);
+        });
+
+        dispatch( onListCategoriasByNegocio( listCategorias ));
+    }
+
     const startSavingCategorias = async ( data:Categorias ) => {
         let id:number;
         categorias.length > 0 ? id = categorias.length + 1 : id = 1;
         data.id = id.toString();
 
-        await addDoc(collection(FirebaseDB, "categorias"), {'negocioid': '1', ...data })
+        await addDoc(collection(FirebaseDB, "categorias"), { ...data })
             .then( () => {
                 dispatch( onAddNewCategoria( data ));
             })
@@ -65,12 +77,14 @@ export const useCategoriasStore = () => {
 
     return {
         startLoadingCategorias,
+        startLoadingCategoriasByNegocio,
         startSavingCategorias,
         startUpdateCategoria,
         startDeleteCategoria,
         isLoading,
         categorias,
-        categoria
+        categoria,
+        categoriasByNegocio
     }
 
 }

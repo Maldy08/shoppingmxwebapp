@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Categorias } from "@interfaces";
-import { useCategoriasStore } from "../../hooks"
+import { useCategoriasStore, useNegociosStore } from "../../hooks"
 import { MainLayout } from "../layout/MainLayout"
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { ModalAddCategorias, TableCategorias } from "../components/categorias";
+import { ModalDeleteGeneric } from "../components";
 
 export const CategoriasPage = () => {
 
@@ -16,6 +17,8 @@ export const CategoriasPage = () => {
         startLoadingCategorias
      } = useCategoriasStore();
 
+    const { negocios, startLoadingNegocios } = useNegociosStore()
+
     const [modify, setModify] = useState(false);   
     const [showModal, setShowModal] = useState(false);
     const [showmodalDelete, setShowmodalDelete] = useState(false);
@@ -24,6 +27,7 @@ export const CategoriasPage = () => {
 
     useEffect(() => {
         startLoadingCategorias()
+        startLoadingNegocios()
       }, [])
     
     const saveData = async ( data: Categorias) => {
@@ -37,7 +41,7 @@ export const CategoriasPage = () => {
         startLoadingCategorias()
     }
 
-    const deleteData = async ( data:Categorias) => {
+    const deleteData = async ( data:Categorias ) => {
         setCategoriaDelete( data );
         setShowmodalDelete(true)
     }
@@ -59,6 +63,14 @@ export const CategoriasPage = () => {
     return (
        <MainLayout>
          <div className="m-5">
+             { showmodalDelete && 
+                    <ModalDeleteGeneric 
+                        data={ categoriaDelete! }
+                        onDelete={ confirmDeleteData }
+                        handleCancel={ handleCancel }
+                     />
+            }
+
             { showModal && 
                 <div>
                     <ModalAddCategorias 
@@ -66,6 +78,7 @@ export const CategoriasPage = () => {
                         onSaveData={ saveData } 
                         onShowModalClick={ () => setShowModal((prev) => !prev) } 
                         categoria={ categoriMod }
+                        negocios={ negocios }
                     />
                  </div>
             }

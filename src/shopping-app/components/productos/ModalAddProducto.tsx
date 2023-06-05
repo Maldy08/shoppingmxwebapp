@@ -10,7 +10,7 @@ import CurrencyInput from "./CurrencyInput";
 const initialValues: Productos = {
     id:'0',
     id_negocio: '',
-    id_categoria:'',
+    id_categoria: '',
     descripcion: '',
     precio: 0,
     photoUrl: '',
@@ -26,7 +26,8 @@ type Props = {
     categorias:Categorias[]
     file: Blob | ArrayBuffer, 
     fileName: string
-    handleFileChange(e :ChangeEvent<HTMLInputElement>):void
+    handleFileChange(e :ChangeEvent<HTMLInputElement>): void
+    handleChangeNegocio(e :ChangeEvent<HTMLInputElement>) :void
 }
 
 
@@ -68,7 +69,7 @@ export const ModalAddProducto = ( props: Props ) => {
 
                          >
                             {
-                                ({ handleChange }) => (
+                                ({ handleChange, setFieldValue }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -79,6 +80,10 @@ export const ModalAddProducto = ( props: Props ) => {
                                                     <Field
                                                         name="id_negocio"
                                                         as="select"
+                                                        onChange= { (e:ChangeEvent<HTMLInputElement>) => {
+                                                            props.handleChangeNegocio(e)
+                                                            setFieldValue('id_negocio',e.target.value)
+                                                        } }
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
                                                          placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
@@ -145,6 +150,7 @@ export const ModalAddProducto = ( props: Props ) => {
                                                         <Field
                                                             name="id_categoria"
                                                             as="select"
+                                                            onChange={handleChange}
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                                                                  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -158,7 +164,7 @@ export const ModalAddProducto = ( props: Props ) => {
                                                                 ))
                                                             }
                                                         </Field>
-                                                        <ErrorMessage name="id_negocio" component="span" className="block text-xs font-medium text-red-500"/>
+                                                        <ErrorMessage name="id_categoria" component="span" className="block text-xs font-medium text-red-500"/>
                                                         
                                                     </div>
                                                 </div>

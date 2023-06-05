@@ -1,10 +1,11 @@
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import * as Yup from 'yup';
-import { Categorias } from "@interfaces"
+import { Categorias, Negocios } from "@interfaces"
 
 const initialValues: Categorias = {
     id:'0',
-    descripcion: ''
+    descripcion: '',
+    negocioId:''
 }
 
 type Props = {
@@ -13,12 +14,13 @@ type Props = {
     onSaveData: (data: Categorias) => Promise<void>
     modify:boolean
     categoria?: Categorias
+    negocios: Negocios[]
 
 }
 
 
 
-export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categoria } : Props) => {
+export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categoria, negocios } : Props) => {
     return (
         <>
         <div tabIndex={-1}  aria-hidden="true" className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -46,6 +48,7 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                                 Yup.object({
                                     // id_negocio: Yup.string().required('* Campo requerido'),
                                      descripcion: Yup.string().required('* Campo requerido'),
+                                     negocioId: Yup.string().required('* Campo requerido'),
                                 })
                             }
 
@@ -53,7 +56,31 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                             {
                                 ({  }) => (
                                     <Form className="space-y-4">
-                                        <div className="grid grid-cols-1 gap-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                           <div className="">
+                                                <label htmlFor="negocioId" className="block text-sm font-medium leading-6 text-gray-900">
+                                                    Negocio
+                                                </label>
+                                                <div className="mt-2">
+                                                    <Field
+                                                            name="negocioId"
+                                                            as="select"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
+                                                            placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+
+                                                        > 
+                                                        <option disabled value="">(Selecciona un negocio)</option>
+
+                                                            {
+                                                            
+                                                            negocios.map(({ id, nombre_empresa}) => (
+                                                                <option key={ id } value={ nombre_empresa }>{ nombre_empresa } </option>
+                                                                ))
+                                                            }
+                                                        </Field>
+                                                     <ErrorMessage name="negocioId" component="span" className="block text-xs font-medium  text-red-500" />
+                                                </div>
+                                            </div>
 
                                             <div className="">
                                                 <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">

@@ -16,6 +16,7 @@ export const TableCategorias = ( { categorias, onDeleteData, setModify }: Props)
             <thead className="border-bfont-medium dark:border-neutral-500">
                 <tr>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ID</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NEGOCIO</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">DESCRIPCION</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ACCIONES</th>
                 </tr>
@@ -28,6 +29,7 @@ export const TableCategorias = ( { categorias, onDeleteData, setModify }: Props)
                             <tr key={ index } className="border-b dark:border-neutral-500">
                                
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ categoria.id }</td>
+                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ categoria.negocioId }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ categoria.descripcion }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">
                                     <PencilSquareIcon title="Editar categoria" cursor="pointer" onClick={ () => {

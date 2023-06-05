@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { MainLayout } from "../layout/MainLayout"
-import { Productos } from "@interfaces";
+import { Categorias, Productos } from "@interfaces";
 import { useCategoriasStore, useNegociosStore, useProductosStore } from '../../hooks';
 import { ModalAddProducto, TableProductos } from "../components/productos";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
@@ -19,12 +19,13 @@ export const ProductosPage = () => {
     } = useProductosStore();
     
 const {  negocios, startLoadingNegocios } = useNegociosStore();
-const { categorias, startLoadingCategorias } = useCategoriasStore();
+const { categoriasByNegocio, startLoadingCategoriasByNegocio } = useCategoriasStore();
 const [showModal, setShowModal] = useState(false);
 const [modify, setModify] = useState(false);   
 const [showmodalDelete, setShowmodalDelete] = useState(false);
 const [productoMod, setProductoMod] = useState<Productos>()
 const [productoDelete, setProductoDelete] =useState<Productos>()
+const [changeNegocio, setChangeNegocio] = useState('')
 const [file, setFile] = useState<Blob | ArrayBuffer>()
 const [fileName, setFileName] = useState("")
 
@@ -33,9 +34,13 @@ const [fileName, setFileName] = useState("")
 useEffect(() => {
     startLoadingProductos();
     startLoadingNegocios();
-    startLoadingCategorias();
+    //startLoadingCategorias();
  
   }, [])
+
+  useEffect(() => {
+    startLoadingCategoriasByNegocio(changeNegocio)
+  }, [changeNegocio])
 
   const saveData = async ( data: Productos) => {
     if(!modify){
@@ -49,7 +54,7 @@ useEffect(() => {
     startLoadingProductos()
 }
 
-const deleteData = async ( data:Productos) => {
+const deleteData = async ( data:Productos ) => {
 
     setProductoDelete( data );
     setShowmodalDelete(true)
@@ -72,9 +77,15 @@ const editData =  ( data:Productos ) => {
     setModify(true)
     setProductoMod(data)
     setShowModal(true)
+    console.log(data)
 }
 
 const handleCancel = () => setShowmodalDelete(false)
+
+const handleChangeNegocio = ( e:ChangeEvent<HTMLInputElement>) => {
+    // console.log(e.target.value)
+     setChangeNegocio( e.target.value );
+ }
 
     return (
         <MainLayout>
@@ -95,10 +106,11 @@ const handleCancel = () => setShowmodalDelete(false)
                         file={file!} 
                         modify={modify} 
                         negocios={negocios}
-                        categorias={ categorias }
+                        categorias={ categoriasByNegocio }
                         onSaveData={saveData} 
                         onShowModalClick={() => setShowModal((prev) => !prev)} 
                         producto={ productoMod }
+                        handleChangeNegocio={ handleChangeNegocio }
                     />
                 </div> }  
              
