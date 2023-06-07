@@ -76,6 +76,7 @@ const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
 const editData =  ( data:Productos ) => {
     setModify(true)
     setProductoMod(data)
+    setChangeNegocio(data.id_negocio)
     setShowModal(true)
     console.log(data)
 }
