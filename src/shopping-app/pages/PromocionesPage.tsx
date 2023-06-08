@@ -8,10 +8,11 @@ import { Promociones } from "@interfaces";
 export const PromocionesPage = () => {
     const { isLoading: isLoadingNegocios, negocios, startLoadingNegocios } = useNegociosStore();
     const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio } = useProductosStore()
-    const {isLoading: isLoadingCategorias, categorias, startLoadingCategorias } = useCategoriasStore()
+    const {isLoading: isLoadingCategorias, categoriasByNegocio, startLoadingCategoriasByNegocio } = useCategoriasStore()
     const {  } = usePromocionesStore()
     const [promocionMod, setPromocionMod] = useState<Promociones>()
     const [changeNegocio, setChangeNegocio] = useState('')
+
     const [showProductos, setShowProductos] = useState(false)
     const [showCategorias, setShowCategorias] = useState(false)    
     
@@ -19,12 +20,13 @@ export const PromocionesPage = () => {
         //startLoadingProductos();\
         //startLoadingProductosByNegocio("Empresa de prueba")
         startLoadingNegocios();
-        startLoadingCategorias()
+       // startLoadingCategorias()
      
       }, [])
 
       useEffect(() => {
         startLoadingProductosByNegocio(changeNegocio)
+        startLoadingCategoriasByNegocio(changeNegocio)
       }, [changeNegocio])
       
 
@@ -54,8 +56,8 @@ export const PromocionesPage = () => {
                                 negocios={ negocios }
                                 productos={ productosByNegocio }
                                 promocion={ promocionMod }
-                                categorias={ categorias }
-                                modify={false}
+                                categorias={ categoriasByNegocio }
+                                modify={ false }
                                 onSaveData={ saveData}
                                 handleChangeNegocio={ handleChangeNegocio }
                                 showProducts={ showProductos }
