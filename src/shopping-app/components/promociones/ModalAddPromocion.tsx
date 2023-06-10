@@ -4,6 +4,7 @@ import DatePicker  from "react-datepicker";
 import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import "react-datepicker/dist/react-datepicker.css";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const initialValues: Promociones = {
     id:'0',
@@ -13,6 +14,7 @@ const initialValues: Promociones = {
     fecha_creacion: new Date(),
     photoUrl:'',
     productos:[],
+    categorias:[],
     vigencia: new Date(),
     descripcion: ''
 }
@@ -26,6 +28,7 @@ type Props = {
     negocios: Negocios[]
     categorias: Categorias[]
     handleChangeNegocio(e :ChangeEvent<HTMLInputElement>) :void
+    handleChangeCategoria(e :ChangeEvent<HTMLInputElement>) :void
     showProducts:boolean
     onShowProductsClick():void
     showCategorias:boolean
@@ -34,6 +37,18 @@ type Props = {
     // fileName: string
     // handleFileChange(e :ChangeEvent<HTMLInputElement>):void
 }
+
+const categoriasCargadas: Categorias[] = [];
+
+const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
+    // setChangeCategoria( e.target.value );
+     categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:''})
+     console.log({categoriasCargadas});
+ }
+
+ const addCategoriaHandler = ( event: React.MouseEvent<SVGSVGElement> ) => {
+    console.log('click')
+ }
 
 export const ModalAddPromocion = (
     {
@@ -45,6 +60,7 @@ export const ModalAddPromocion = (
          categorias,
          negocios,
          handleChangeNegocio,
+         handleChangeCategoria,
          showProducts,
          onShowProductsClick,
          showCategorias,
@@ -77,7 +93,7 @@ export const ModalAddPromocion = (
 
                             >
                              {
-                                ({ setFieldValue, values  }) => (
+                                ({ setFieldValue, values }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -161,10 +177,10 @@ export const ModalAddPromocion = (
                                             { showProducts &&
                                             
                                                 <div className="">
-                                                    <label htmlFor="id_negocio" className="block text-sm font-medium leading-6 text-gray-900">
+                                                    <label htmlFor="productos" className="block text-sm font-medium leading-6 text-gray-900">
                                                         Productos
                                                     </label>
-                                                    <div className="mt-2">
+                                                    <div className="mt-2 flex">
                                                         <Field
                                                             name="productos"
                                                             as="select"
@@ -180,22 +196,29 @@ export const ModalAddPromocion = (
                                                                 ))
                                                             }
                                                         </Field>
+         
                                                         <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500"/>
-                                                            
+                                                        <div className="mt-1 w-5">
+                                                            <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "/>
+                                                        </div>
                                                     </div>
-                                                    <button type="reset">+</button>
+                                                   
                                                 </div>
                                             }
                                             {
                                                 showCategorias &&
                                                 <div className="">
-                                                    <label htmlFor="id_negocio" className="block text-sm font-medium leading-6 text-gray-900">
+                                                    <label htmlFor="categorias" className="block text-sm font-medium leading-6 text-gray-900">
                                                         Categorias
                                                     </label>
-                                                    <div className="mt-2">
+                                                    <div className="mt-2 flex">
                                                         <Field
                                                             name="categorias"
                                                             as="select"
+                                                            onChange= { (e:ChangeEvent<HTMLInputElement>) => {
+                                                                handleChangeCategoria(e)
+                                                                setFieldValue('categorias',e.target.value)
+                                                            } }
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
                                                         > 
@@ -204,13 +227,19 @@ export const ModalAddPromocion = (
                                                             {
                                                             
                                                             categorias.map(({ id,descripcion }) => (
-                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                <option key={ id } value={ descripcion }>{ descripcion } </option>
                                                                 ))
                                                             }
                                                         </Field>
                                                         <ErrorMessage name="categorias" component="span" className="block text-xs font-medium  text-red-500"/>
+                                                        <div className="mt-1 w-5">
+                                                            <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
+                                                                onClick={ () => console.log(values.categorias)}
+                                                            />
+                                                        </div>
                                                             
                                                     </div>
+                      
                                                 </div>    
                                             }
          
