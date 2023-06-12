@@ -38,6 +38,13 @@ export const useProductosStore = () => {
         dispatch( onListProductosByNegocio( listProductos ))
     }
 
+    const startLoadingProductoByNegocioAndIdProducto = ( productoId: string ): Productos => {
+        
+       // const categoria = categoriasByNegocio.filter( categoria => categoria.descripcion === categoriaId)[0];
+       const prod = productosByNegocio.filter( producto => producto.descripcion === productoId)[0]
+       return prod;
+    }
+
     const startSavingProductos = async ( data:Productos, file:Blob | ArrayBuffer, fileName:string ) => {
         let id: number;
         productos.length > 0 ? id = productos.length + 1 : id = 1;
@@ -90,6 +97,7 @@ export const useProductosStore = () => {
         productos,
         productosByNegocio,
         startLoadingProductosByNegocio,
+        startLoadingProductoByNegocioAndIdProducto,
         startLoadingProductos,
         startSavingProductos,
         startUpdateProducto,

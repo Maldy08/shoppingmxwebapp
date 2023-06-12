@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
-import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where, orderBy } from "firebase/firestore";
+import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where, orderBy, and } from "firebase/firestore";
 import { categoriasCollection } from "../firebase/collections";
 import { Categorias } from "@interfaces";
 
 import { FirebaseDB } from "../firebase/config";
-import { onListCategorias, onAddNewCategoria, onListCategoriasByNegocio  } from "../store/categorias/categoriasSlice";
+import { onListCategorias, onAddNewCategoria, onListCategoriasByNegocio, onCategoriaByNegocioIdAndCategoriaId  } from "../store/categorias/categoriasSlice";
 
 export const useCategoriasStore = () => {
 
-    const { categoria , categorias, categoriasByNegocio ,isLoading } = useSelector( ( state: RootState ) => state.categorias );
+    const { categoria , categorias, categoriasByNegocio , categoriaByNegocioIdAndCategoriaId ,isLoading } = useSelector( ( state: RootState ) => state.categorias );
     const dispatch = useDispatch();
 
     const startLoadingCategorias = async () => {
@@ -34,6 +34,22 @@ export const useCategoriasStore = () => {
         });
 
         dispatch( onListCategoriasByNegocio( listCategorias ));
+    }
+
+    const startLoadingCategoriasByNegocioAndIdCategoria = ( categoriaId:string ): Categorias => {
+       
+        const categoria = categoriasByNegocio.filter( categoria => categoria.descripcion === categoriaId)[0];
+
+        // const q = query(categoriasCollection, where('negocioId','==', negocioId),where('id', '==', categoriaId ) );
+        // const categorias = await getDocs(q);
+        // const listCategorias: Categorias[] = [];
+        // categorias.docs.forEach( ( categoriaDoc ) => {
+        //     const categoria = categoriaDoc.data();
+        //     listCategorias.push(categoria);
+        // });
+
+         return categoria;
+
     }
 
     const startSavingCategorias = async ( data:Categorias ) => {
@@ -78,13 +94,15 @@ export const useCategoriasStore = () => {
     return {
         startLoadingCategorias,
         startLoadingCategoriasByNegocio,
+        startLoadingCategoriasByNegocioAndIdCategoria,
         startSavingCategorias,
         startUpdateCategoria,
         startDeleteCategoria,
         isLoading,
         categorias,
         categoria,
-        categoriasByNegocio
+        categoriasByNegocio,
+        categoriaByNegocioIdAndCategoriaId
     }
 
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import { ChangeEvent, ReactDOM } from "react"
 import DatePicker  from "react-datepicker";
 
 import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
@@ -25,12 +25,16 @@ type Props = {
     modify:boolean
     promocion?: Promociones
     productos : Productos[]
+    productosCargados:Productos[]
     negocios: Negocios[]
     categorias: Categorias[]
+    categoriasCargadas:Categorias[]
     handleChangeNegocio(e :ChangeEvent<HTMLInputElement>) :void
     handleChangeCategoria(e :ChangeEvent<HTMLInputElement>) :void
     showProducts:boolean
     onShowProductsClick():void
+    handleClickAddCategoria (categoria:string) :void
+    handleClickAddProducto( producto: string ) :void
     showCategorias:boolean
     onShowCategoriasClick():void
     // file: Blob | ArrayBuffer, 
@@ -38,7 +42,6 @@ type Props = {
     // handleFileChange(e :ChangeEvent<HTMLInputElement>):void
 }
 
-const categoriasCargadas: string[] = [];
 
 // const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
 //     // setChangeCategoria( e.target.value );
@@ -46,9 +49,6 @@ const categoriasCargadas: string[] = [];
 //      console.log({categoriasCargadas});
 //  }
 
- const addCategoriaHandler = ( event: React.MouseEvent<SVGSVGElement> ) => {
-    console.log('click')
- }
 
 export const ModalAddPromocion = (
     {
@@ -57,10 +57,14 @@ export const ModalAddPromocion = (
          modify,
          promocion,
          productos,
+         productosCargados,
          categorias,
          negocios,
          handleChangeNegocio,
          handleChangeCategoria,
+         handleClickAddCategoria,
+         handleClickAddProducto,
+         categoriasCargadas,
          showProducts,
          onShowProductsClick,
          showCategorias,
@@ -86,8 +90,9 @@ export const ModalAddPromocion = (
                         <div className="relative p-6 flex-auto">
                             <Formik
                                 initialValues={ modify? promocion! : initialValues }
-                                onSubmit={ ( values : Promociones )=> {
-                                    onSaveData( values )
+                                onSubmit={ ( values : Promociones ) => {
+                                  
+                                   // onSaveData( values )
                                 }}
                            
 
@@ -107,6 +112,7 @@ export const ModalAddPromocion = (
                                                         onChange= { (e:ChangeEvent<HTMLInputElement>) => {
                                                             handleChangeNegocio(e)
                                                             setFieldValue('id_negocio',e.target.value)
+                                                            categoriasCargadas.splice(0,categoriasCargadas.length)
                                                         } }
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
@@ -192,15 +198,32 @@ export const ModalAddPromocion = (
                                                             {
                                                             
                                                             productos.map(({ id,descripcion }) => (
-                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                <option key={ id } value={ descripcion }>{ descripcion } </option>
                                                                 ))
                                                             }
                                                         </Field>
          
                                                         <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500"/>
                                                         <div className="mt-1 w-5">
-                                                            <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "/>
+                                                            <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
+                                                            onClick={ () => handleClickAddProducto( values.productos.toString() )}
+                                                            />
                                                         </div>
+                                                    </div>
+
+                                                    <div className="">
+                                                        {
+                                                            productosCargados.length > 0 && 
+                                                            productosCargados.map((producto) => (
+                                                                <span  className="inline-flex items-center px-2 py-1 mt-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300">
+                                                                {producto.descripcion}
+                                                                <button onClick={()=> alert(producto.id)} type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
+                                                                    <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span className="sr-only">Remove badge</span>
+                                                                </button>
+                                                              </span>
+                                                            ))
+                                                        }
                                                     </div>
                                                    
                                                 </div>
@@ -215,10 +238,10 @@ export const ModalAddPromocion = (
                                                         <Field
                                                             name="categorias"
                                                             as="select"
-                                                            onChange= { (e:ChangeEvent<HTMLInputElement>) => {
-                                                                handleChangeCategoria(e)
-                                                                setFieldValue('categorias',e.target.value)
-                                                            } }
+                                                            // onChange= { (e:ChangeEvent<HTMLInputElement>) => {
+                                                            //     //handleChangeCategoria(e)
+                                                            //     setFieldValue('categorias',e.target.value)
+                                                            // } }
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
                                                         > 
@@ -227,22 +250,42 @@ export const ModalAddPromocion = (
                                                             {
                                                             
                                                             categorias.map(({ id,descripcion }) => (
-                                                                <option key={ id } value={ id }>{ descripcion } </option>
+                                                                <option key={ id } value={ descripcion }>{ descripcion } </option>
                                                                 ))
                                                             }
+
                                                         </Field>
                                                         <ErrorMessage name="categorias" component="span" className="block text-xs font-medium  text-red-500"/>
                                                         <div className="mt-1 w-5">
                                                             <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
-                                                                onClick={ () => categoriasCargadas.push(values.categorias.toString())}
+                                                              onClick={ ()=> handleClickAddCategoria(values.categorias.toString() )}
                                                             />
                                                         </div>
                                                             
                                                     </div>
-                      
-                                                </div>    
+                                                    <div className="">
+                                                        {
+                                                            categoriasCargadas.length > 0 && 
+                                                            categoriasCargadas.map((categoria) => (
+                                                                <span  className="inline-flex items-center px-2 py-1 mt-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300">
+                                                                {categoria.descripcion}
+                                                                <button onClick={()=> alert(categoria.id)} type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
+                                                                    <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span className="sr-only">Remove badge</span>
+                                                                </button>
+                                                              </span>
+                                                            ))
+                                                        }
+                                                    </div>
+
+                                                </div>  
+                                                  
                                             }
          
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-2 gap-4">
+
                                         </div>
 
                                         

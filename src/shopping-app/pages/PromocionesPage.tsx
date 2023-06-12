@@ -2,21 +2,22 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useCategoriasStore, useNegociosStore, useProductosStore, usePromocionesStore } from "../../hooks"
 import { ModalAddPromocion } from "../components/promociones";
 import { MainLayout } from "../layout/MainLayout"
-import { Categorias, Promociones } from "@interfaces";
+import { Categorias, Productos, Promociones } from "@interfaces";
 
 
 export const PromocionesPage = () => {
     const { isLoading: isLoadingNegocios, negocios, startLoadingNegocios } = useNegociosStore();
-    const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio } = useProductosStore()
-    const {isLoading: isLoadingCategorias, categoriasByNegocio, startLoadingCategoriasByNegocio } = useCategoriasStore()
+    const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio, startLoadingProductoByNegocioAndIdProducto } = useProductosStore()
+    const {isLoading: isLoadingCategorias, categoriasByNegocio, startLoadingCategoriasByNegocio, startLoadingCategoriasByNegocioAndIdCategoria } = useCategoriasStore()
     const {  } = usePromocionesStore()
     const [promocionMod, setPromocionMod] = useState<Promociones>()
     const [changeNegocio, setChangeNegocio] = useState('')
-    const [changeCategoriasCargadas, setChangeCategoriasCargadas] = useState<Categorias[]>([])  
+    const [categoriasCargadas, setCategoriasCargadas] = useState<Categorias[]>([])  
+    const[ productosCargados, setProductosCargados] = useState<Productos[]>([])
 
     const [showProductos, setShowProductos] = useState(false)
     const [showCategorias, setShowCategorias] = useState(false)    
-    const categoriasCargadas: Categorias[] = [];
+ //   const categoriasCargadas: Categorias[] = [];
 
     
     useEffect(() => {
@@ -50,9 +51,30 @@ export const PromocionesPage = () => {
 
     const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
        // setChangeCategoria( e.target.value );
-        categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:changeNegocio})
-        setChangeCategoriasCargadas( prev => [ ...prev,{ id:'0', descripcion: e.target.value, negocioId:changeNegocio}])
-        console.log({changeCategoriasCargadas});
+       // categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:changeNegocio})
+        setCategoriasCargadas( prev => [ ...prev,{ id:'0', descripcion: e.target.value, negocioId:changeNegocio}])
+        //console.log({changeCategoriasCargadas});
+    }
+
+    const handleClickAddCategoria = ( categoria:string ) => {
+        const cat = startLoadingCategoriasByNegocioAndIdCategoria( categoria );
+        setCategoriasCargadas( prev => [ ...prev,{ id:cat.id, descripcion: categoria, negocioId:changeNegocio}])
+        //console.log( cat.id )
+    }
+
+    const handleClickAddProducto = ( producto:string ) => {
+        const prod = startLoadingProductoByNegocioAndIdProducto( producto )
+        setProductosCargados( prev => [ 
+            ...prev,
+                 { 
+                    id: prod.id, 
+                    descripcion:producto, 
+                    id_categoria: prod.id_categoria, 
+                    id_negocio: changeNegocio, 
+                    photoUrl:prod.photoUrl, 
+                    precio: prod.precio
+                 }
+                ])
     }
 
 
@@ -76,6 +98,10 @@ export const PromocionesPage = () => {
                                 onShowProductsClick={ () => setShowProductos( prev => !prev )}
                                 showCategorias={ showCategorias }
                                 onShowCategoriasClick={ () => setShowCategorias( prev => !prev )}
+                                categoriasCargadas={ categoriasCargadas }
+                                handleClickAddCategoria={ handleClickAddCategoria }
+                                handleClickAddProducto={ handleClickAddProducto }
+                                productosCargados={ productosCargados }
   
                           />
                     }

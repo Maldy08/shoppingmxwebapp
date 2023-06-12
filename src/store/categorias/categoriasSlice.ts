@@ -11,6 +11,7 @@ export const categoriasSlice = createSlice({
         isLoading:true,
         categoria: categoria,
         categorias:categorias,
+        categoriaByNegocioIdAndCategoriaId:categoria,
         categoriasByNegocio: categorias
     },
     reducers:{
@@ -23,6 +24,10 @@ export const categoriasSlice = createSlice({
             state.isLoading = false;
             state.categoriasByNegocio = payload;
         },
+        onCategoriaByNegocioIdAndCategoriaId:( state, { payload } ) => {
+            state.isLoading = false;
+            state.categoriaByNegocioIdAndCategoriaId = payload;
+        },
         onAddNewCategoria: ( state, { payload }) => {
             state.isLoading = false,
             state.categoria = payload
@@ -31,4 +36,4 @@ export const categoriasSlice = createSlice({
     }
 })
 
-export const {onListCategorias, onListCategoriasByNegocio, onAddNewCategoria } = categoriasSlice.actions;
+export const {onListCategorias, onListCategoriasByNegocio, onAddNewCategoria,onCategoriaByNegocioIdAndCategoriaId } = categoriasSlice.actions;
