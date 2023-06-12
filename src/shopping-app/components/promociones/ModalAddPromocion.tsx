@@ -38,13 +38,13 @@ type Props = {
     // handleFileChange(e :ChangeEvent<HTMLInputElement>):void
 }
 
-const categoriasCargadas: Categorias[] = [];
+const categoriasCargadas: string[] = [];
 
-const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
-    // setChangeCategoria( e.target.value );
-     categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:''})
-     console.log({categoriasCargadas});
- }
+// const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
+//     // setChangeCategoria( e.target.value );
+//      categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:''})
+//      console.log({categoriasCargadas});
+//  }
 
  const addCategoriaHandler = ( event: React.MouseEvent<SVGSVGElement> ) => {
     console.log('click')
@@ -227,14 +227,14 @@ export const ModalAddPromocion = (
                                                             {
                                                             
                                                             categorias.map(({ id,descripcion }) => (
-                                                                <option key={ id } value={ descripcion }>{ descripcion } </option>
+                                                                <option key={ id } value={ id }>{ descripcion } </option>
                                                                 ))
                                                             }
                                                         </Field>
                                                         <ErrorMessage name="categorias" component="span" className="block text-xs font-medium  text-red-500"/>
                                                         <div className="mt-1 w-5">
                                                             <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
-                                                                onClick={ () => console.log(values.categorias)}
+                                                                onClick={ () => categoriasCargadas.push(values.categorias.toString())}
                                                             />
                                                         </div>
                                                             
