@@ -10,7 +10,7 @@ const initialValues: Promociones = {
     id:'0',
     id_negocio: '',
     descuento:0,
-    disponible:true,
+    disponible:false,
     fecha_creacion: new Date(),
     photoUrl:'',
     productos:[],
@@ -72,7 +72,8 @@ export const ModalAddPromocion = (
          onShowProductsClick,
          showCategorias,
          onShowCategoriasClick,
-         showDescuento
+         showDescuento,
+         onShowDescuentoClick,
         // file,
         // fileName,
         // handleFileChange
@@ -102,7 +103,7 @@ export const ModalAddPromocion = (
 
                             >
                              {
-                                ({ setFieldValue, values }) => (
+                                ({ setFieldValue, values, handleChange }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -288,27 +289,52 @@ export const ModalAddPromocion = (
          
                                         </div>
                                         
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-3 gap-4">
                                             <div className="flex items-center mb-4">
-                                                    <input disabled={showCategorias} onChange={ onShowProductsClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                                    <input  onChange={ onShowDescuentoClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                                     <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> con descuento</label>
 
                                              </div>
-                                            <div className="">
-                                                <label htmlFor="descuento" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Descuento
-                                                </label>
-                                                <div className="mt-2">
-                                                    <Field
-                                                        name="descuento"
-                                                        type="text"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                                                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
-                                                         sm:text-sm sm:leading-6"
+                                             {
+                                             showDescuento && 
+                                                <div className="">
+                                                    <label htmlFor="descuento" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Descuento
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Field
+                                                            name="descuento"
+                                                            type="number"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                                                            ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
+                                                            sm:text-sm sm:leading-6"
 
-                                                    />
-                                                    <ErrorMessage name="descuento" component="span" className="block text-xs font-medium  text-red-500" />
+                                                        />
+                                                        <ErrorMessage name="descuento" component="span" className="block text-xs font-medium  text-red-500" />
+                                                    </div>
                                                 </div>
+                                             }
+
+
+                                        </div>
+
+                                        <div className="grid grid-cols-1 gap-4">
+
+                                            <div className="">
+                                                    <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Descripcion
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Field
+                                                            name="descripcion"
+                                                            type="text"
+                                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                                                            ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
+                                                            sm:text-sm sm:leading-6"
+
+                                                        />
+                                                        <ErrorMessage name="descripcion" component="span" className="block text-xs font-medium  text-red-500" />
+                                                    </div>
                                             </div>
                                         </div>
 
