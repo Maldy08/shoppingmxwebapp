@@ -16,7 +16,8 @@ export const PromocionesPage = () => {
     const[ productosCargados, setProductosCargados] = useState<Productos[]>([])
 
     const [showProductos, setShowProductos] = useState(false)
-    const [showCategorias, setShowCategorias] = useState(false)    
+    const [showCategorias, setShowCategorias] = useState(false)
+    const [showDescuento, setShowDescuento] = useState(false)    
  //   const categoriasCargadas: Categorias[] = [];
 
     
@@ -102,6 +103,8 @@ export const PromocionesPage = () => {
                                 handleClickAddCategoria={ handleClickAddCategoria }
                                 handleClickAddProducto={ handleClickAddProducto }
                                 productosCargados={ productosCargados }
+                                showDescuento={ showDescuento }
+                                onShowDescuentoClick={ () => setShowDescuento( prev => !prev )}
   
                           />
                     }
