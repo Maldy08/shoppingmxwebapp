@@ -24,7 +24,7 @@ export const usePromocionesStore = () => {
         dispatch( onListPromociones( listPromociones ));
     }
 
-    const startSavingPromociones = async ( data:Promociones ) => {
+    const startSavingPromociones = async ( data:Promociones , file:Blob | ArrayBuffer, fileName:string) => {
         let id:number;
         promociones.length > 0 ? id = promociones.length + 1 : id = 1;
         data.id = id.toString();
