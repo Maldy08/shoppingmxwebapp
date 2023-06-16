@@ -36,7 +36,7 @@ export const useCategoriasStore = () => {
         dispatch( onListCategoriasByNegocio( listCategorias ));
     }
 
-    const startLoadingCategoriasByNegocioAndIdCategoria = ( categoriaId:string ): Categorias => {
+    const startLoadingCategoriasByNegocioAndIdCategoria = ( categoriaId:any ): Categorias => {
        
         const categoria = categoriasByNegocio.filter( categoria => categoria.descripcion === categoriaId)[0];
 

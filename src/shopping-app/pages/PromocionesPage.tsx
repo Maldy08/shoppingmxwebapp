@@ -17,7 +17,9 @@ export const PromocionesPage = () => {
 
     const [showProductos, setShowProductos] = useState(false)
     const [showCategorias, setShowCategorias] = useState(false)
-    const [showDescuento, setShowDescuento] = useState(false)    
+    const [showDescuento, setShowDescuento] = useState(false)  
+    const [file, setFile] = useState<Blob | ArrayBuffer>()
+    const [fileName, setFileName] = useState("")  
  //   const categoriasCargadas: Categorias[] = [];
 
     
@@ -51,7 +53,7 @@ export const PromocionesPage = () => {
 
         }
 
-        await startSavingPromociones( promocion )
+        await startSavingPromociones( promocion, file!, fileName )
         
         //  productosCargados.length > 0 &&
         //     productosCargados.map( (productoCargado ) => (
@@ -80,9 +82,9 @@ export const PromocionesPage = () => {
         //console.log({changeCategoriasCargadas});
     }
 
-    const handleClickAddCategoria = ( categoria:string ) => {
+    const handleClickAddCategoria = ( categoria:Categorias[] ) => {
         const cat = startLoadingCategoriasByNegocioAndIdCategoria( categoria );
-        setCategoriasCargadas( prev => [ ...prev,{ id:cat.id, descripcion: categoria, negocioId:changeNegocio}])
+        setCategoriasCargadas( prev => [ ...prev, { ...cat}])
         //console.log( cat.id )
     }
 
@@ -90,6 +92,24 @@ export const PromocionesPage = () => {
        // console.log(producto)
         const prod = startLoadingProductoByNegocioAndIdProducto( producto )
         setProductosCargados( prev => [ ...prev, { ...prod }] )
+    }
+
+    const handleClickEliminarProducto = (  producto:Productos ) => {
+        // console.log( producto )
+       setProductosCargados( (prev) => prev.filter((prod) => prod !== producto ))
+
+    }
+
+    const handleClickEliminarCategoria = (  categoria:Categorias ) => {
+        // console.log( producto )
+       setCategoriasCargadas( (prev) => prev.filter((cat) => cat !== categoria ))
+
+    }
+
+
+    const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
+        setFile( e.target.files![0]);
+        setFileName(e.target.files![0].name)
     }
 
 
@@ -119,6 +139,11 @@ export const PromocionesPage = () => {
                                 productosCargados={ productosCargados }
                                 showDescuento={ showDescuento }
                                 onShowDescuentoClick={ () => setShowDescuento( prev => !prev )}
+                                handleFileChange={ handleFileChange }
+                                file={ file! }
+                                fileName={ fileName }
+                                handleClickEliminarProducto={ handleClickEliminarProducto }
+                                handleClickEliminarCategoria={ handleClickEliminarCategoria }
   
                           />
                     }

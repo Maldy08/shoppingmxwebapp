@@ -45,7 +45,7 @@ export const useProductosStore = () => {
        return prod;
     }
 
-    const startSavingProductos = async ( data:Productos, file:Blob | ArrayBuffer, fileName:string ) => {
+    const startSavingProductos = async ( data:Productos, file:Blob | ArrayBuffer, fileName:string  ) => {
         let id: number;
         productos.length > 0 ? id = productos.length + 1 : id = 1;
         data.id = id.toString();

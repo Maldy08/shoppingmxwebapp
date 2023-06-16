@@ -1,6 +1,8 @@
 import { ChangeEvent } from "react"
 import DatePicker  from "react-datepicker";
 
+import * as Yup from 'yup';
+
 import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,12 +35,17 @@ type Props = {
     handleChangeCategoria(e :ChangeEvent<HTMLInputElement>) :void
     showProducts:boolean
     onShowProductsClick():void
-    handleClickAddCategoria (categoria:string) :void
+    handleClickAddCategoria (categoria:Categorias[]) :void
     handleClickAddProducto( producto: Productos[] ) :void
+    handleClickEliminarProducto( producto: Productos): void,
+    handleClickEliminarCategoria( categoria: Categorias): void,
     showCategorias:boolean
     onShowCategoriasClick():void
     showDescuento:boolean
     onShowDescuentoClick():void
+    handleFileChange(e :ChangeEvent<HTMLInputElement>):void
+    file: Blob | ArrayBuffer, 
+    fileName: string,
     
     // file: Blob | ArrayBuffer, 
     // fileName: string
@@ -66,7 +73,9 @@ export const ModalAddPromocion = (
          handleChangeNegocio,
          handleChangeCategoria,
          handleClickAddCategoria,
+         handleClickEliminarCategoria,
          handleClickAddProducto,
+         handleClickEliminarProducto,
          categoriasCargadas,
          showProducts,
          onShowProductsClick,
@@ -74,6 +83,9 @@ export const ModalAddPromocion = (
          onShowCategoriasClick,
          showDescuento,
          onShowDescuentoClick,
+         handleFileChange,
+         file,
+         fileName,
         // file,
         // fileName,
         // handleFileChange
@@ -99,6 +111,12 @@ export const ModalAddPromocion = (
                                   
                                     onSaveData( values )
                                 }}
+                                validationSchema={                               
+                                     Yup.object({
+                                        descripcion: Yup.string().required('* Campo requerido'),
+                                        id_negocio: Yup.string().notOneOf(['Selecciona un negocio']).required('* Selecciona una opcion') 
+
+                                })}
                            
 
                             >
@@ -148,9 +166,10 @@ export const ModalAddPromocion = (
                                                         title="fecha"
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         dateFormat="dd/MM/yyyy"
+                                                        minDate={ values.fecha_creacion}
                                                         // disabled={isSubmitting}
                                                         selected={ values.vigencia } 
-                                                        onChange={
+                                                        onChange= {
                                                             ( date:any ) => setFieldValue('vigencia', date)
                                                         }
                                                     />
@@ -222,7 +241,7 @@ export const ModalAddPromocion = (
                                                             productosCargados.map((producto) => (
                                                                 <span  className="inline-flex items-center px-2 py-1 mt-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300">
                                                                 {producto.descripcion}
-                                                                <button onClick={()=> alert(producto.id)} type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
+                                                                <button onClick={()=> handleClickEliminarProducto(producto) } type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
                                                                     <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span className="sr-only">Remove badge</span>
                                                                 </button>
@@ -263,7 +282,7 @@ export const ModalAddPromocion = (
                                                         <ErrorMessage name="categorias" component="span" className="block text-xs font-medium  text-red-500"/>
                                                         <div className="mt-1 w-5">
                                                             <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
-                                                              onClick={ ()=> handleClickAddCategoria(values.categorias.toString() )}
+                                                              onClick={ ()=> handleClickAddCategoria(values.categorias) }
                                                             />
                                                         </div>
                                                             
@@ -274,7 +293,7 @@ export const ModalAddPromocion = (
                                                             categoriasCargadas.map((categoria) => (
                                                                 <span  className="inline-flex items-center px-2 py-1 mt-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300">
                                                                 {categoria.descripcion}
-                                                                <button onClick={()=> alert(categoria.id)} type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
+                                                                <button onClick={()=> handleClickEliminarCategoria( categoria )} type="button" className="inline-flex items-center p-0.5 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="Remove">
                                                                     <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span className="sr-only">Remove badge</span>
                                                                 </button>
@@ -319,7 +338,6 @@ export const ModalAddPromocion = (
                                         </div>
 
                                         <div className="grid grid-cols-1 gap-4">
-
                                             <div className="">
                                                     <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
                                                         Descripcion
@@ -338,26 +356,41 @@ export const ModalAddPromocion = (
                                             </div>
                                         </div>
 
-                                        
-   
+                                        <div className="grid grid-cols-1 gap-4">
+                                            <div>
+                                                <label htmlFor="imagen" className="block text-sm font-medium leading-6 text-gray-900">
+                                                Imagen 
+                                                </label>
+                                                <div className="mt-2">
+                                                    {
+                                                        modify || promocion?.photoUrl == ''
+                                                        ?                                          
+                                                        <img 
+                                                            src={promocion?.photoUrl} alt="photo"
+                                                            className="rounded-lg h-20"
 
-                                        {/* <div className="grid grid-cols-2 gap-4">
-                                            <div className="">
-                                                    <label htmlFor="descuento" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Descuento
-                                                    </label>
-                                                    <div className="mt-2">
-                                                    <Field 
-                                                        name="descuento"
-                                                        type="number"
-                                                    />
+                                                        />
+                                                        :
+                                                        <div>
+                                                            <input type="file" name="imagen" id="imagen"accept="image/*"
+                                                            className="block w-full cursor-pointer p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            onChange={ (e :ChangeEvent<HTMLInputElement>) => {
+                                                                handleFileChange(e)
+                                                                fileName = e.target.files![0].name;
+                                                                
+                                                                // file = e.target.files![0]
+                                                            }}
+                                                            
+                                                                    
+                                                            />
 
-                                                        <ErrorMessage name="descuento" component="span" className="block text-xs font-medium  text-red-500" />
+                                                            {/* <img src={URL.createObjectURL(file)} alt="" /> */}
                                                     </div>
+                                                    
+                                                    }
                                                 </div>
-
-                                        </div> */}
-
+                                            </div>
+                                        </div>
 
 
                                              <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
