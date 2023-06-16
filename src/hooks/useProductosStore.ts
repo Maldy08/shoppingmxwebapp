@@ -38,7 +38,7 @@ export const useProductosStore = () => {
         dispatch( onListProductosByNegocio( listProductos ))
     }
 
-    const startLoadingProductoByNegocioAndIdProducto = ( productoId: string ): Productos => {
+    const startLoadingProductoByNegocioAndIdProducto = ( productoId: any ): Productos => {
         
        // const categoria = categoriasByNegocio.filter( categoria => categoria.descripcion === categoriaId)[0];
        const prod = productosByNegocio.filter( producto => producto.descripcion === productoId)[0]

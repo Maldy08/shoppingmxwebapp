@@ -9,7 +9,7 @@ export const PromocionesPage = () => {
     const { isLoading: isLoadingNegocios, negocios, startLoadingNegocios } = useNegociosStore();
     const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio, startLoadingProductoByNegocioAndIdProducto } = useProductosStore()
     const {isLoading: isLoadingCategorias, categoriasByNegocio, startLoadingCategoriasByNegocio, startLoadingCategoriasByNegocioAndIdCategoria } = useCategoriasStore()
-    const {  } = usePromocionesStore()
+    const { startSavingPromociones } = usePromocionesStore()
     const [promocionMod, setPromocionMod] = useState<Promociones>()
     const [changeNegocio, setChangeNegocio] = useState('')
     const [categoriasCargadas, setCategoriasCargadas] = useState<Categorias[]>([])  
@@ -36,7 +36,30 @@ export const PromocionesPage = () => {
       
 
     const saveData = async ( data: Promociones ) => {
-         console.log( data )
+
+        const promocion: Promociones = {
+            categorias: categoriasCargadas,
+            productos: productosCargados,
+            descripcion: data.descripcion,
+            descuento: data.descuento,
+            disponible: data.disponible,
+            fecha_creacion: data.fecha_creacion,
+            id: '0',
+            id_negocio: data.id_negocio,
+            photoUrl: '',
+            vigencia: data.vigencia
+
+        }
+
+        await startSavingPromociones( promocion )
+        
+        //  productosCargados.length > 0 &&
+        //     productosCargados.map( (productoCargado ) => (
+        //          console.log( productoCargado )
+        //     )
+              
+        //     )
+         console.log( promocion )
     }
 
     
@@ -63,19 +86,10 @@ export const PromocionesPage = () => {
         //console.log( cat.id )
     }
 
-    const handleClickAddProducto = ( producto:string ) => {
+    const handleClickAddProducto = ( producto:Productos[] ) => {
+       // console.log(producto)
         const prod = startLoadingProductoByNegocioAndIdProducto( producto )
-        setProductosCargados( prev => [ 
-            ...prev,
-                 { 
-                    id: prod.id, 
-                    descripcion:producto, 
-                    id_categoria: prod.id_categoria, 
-                    id_negocio: changeNegocio, 
-                    photoUrl:prod.photoUrl, 
-                    precio: prod.precio
-                 }
-                ])
+        setProductosCargados( prev => [ ...prev, { ...prod }] )
     }
 
 

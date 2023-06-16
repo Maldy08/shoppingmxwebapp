@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactDOM } from "react"
+import { ChangeEvent } from "react"
 import DatePicker  from "react-datepicker";
 
 import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
@@ -34,7 +34,7 @@ type Props = {
     showProducts:boolean
     onShowProductsClick():void
     handleClickAddCategoria (categoria:string) :void
-    handleClickAddProducto( producto: string ) :void
+    handleClickAddProducto( producto: Productos[] ) :void
     showCategorias:boolean
     onShowCategoriasClick():void
     showDescuento:boolean
@@ -97,7 +97,7 @@ export const ModalAddPromocion = (
                                 initialValues={ modify? promocion! : initialValues }
                                 onSubmit={ ( values : Promociones ) => {
                                   
-                                   // onSaveData( values )
+                                    onSaveData( values )
                                 }}
                            
 
@@ -211,7 +211,7 @@ export const ModalAddPromocion = (
                                                         <ErrorMessage name="productos" component="span" className="block text-xs font-medium  text-red-500"/>
                                                         <div className="mt-1 w-5">
                                                             <PlusCircleIcon className="w-6 h-6 text-blue-800 inline "
-                                                            onClick={ () => handleClickAddProducto( values.productos.toString() )}
+                                                            onClick={ () => handleClickAddProducto( values.productos )}
                                                             />
                                                         </div>
                                                     </div>
