@@ -17,7 +17,7 @@ export const TablePromociones = ( { promociones, onDeleteData, setModify }: Prop
                 <tr>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">#</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NEGOCIO</th>
-                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">FECHA</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">FECHA CREACION</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">DESCRIPCION</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">VIGENCIA</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ACCIONES</th>
@@ -32,9 +32,9 @@ export const TablePromociones = ( { promociones, onDeleteData, setModify }: Prop
                                 <td><img src={ promocion.photoUrl } className="rounded-lg h-12" alt="imagen" width={ 50 } /> </td>
                                
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.id_negocio }</td>
-                                {/* <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.fecha_creacion.toJSON()}</td> */}
+                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.fecha_creacion.toDate().toLocaleDateString()}</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.descripcion }</td>
-                                {/* <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.vigencia.toString() }</td> */}
+                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.vigencia.toDate().toLocaleDateString() }</td>
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">
                                     <PencilSquareIcon title="Editar negocio" cursor="pointer" onClick={ () => {
                                         setModify( promocion )

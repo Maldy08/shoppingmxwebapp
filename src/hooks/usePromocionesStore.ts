@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store/store"
-import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
+import {  Timestamp, addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
 import { promocionesCollection } from "../firebase/collections";
 import { Promociones } from "@interfaces";
 import { onAddNewPromocion, onListPromociones } from "../store/promociones/promocionesSlice";
 import { FirebaseDB, FirebaseStorage } from "../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
 
 export const usePromocionesStore = () => {
 
@@ -18,11 +19,13 @@ export const usePromocionesStore = () => {
         const listPromociones: Promociones[] = [];
         promociones.docs.forEach( ( promocionDoc ) => {
             const promocion = promocionDoc.data();
+            //console.log( promocion.fecha_creacion.toDate().toLocaleDateString())
             listPromociones.push(promocion);
         });
 
         dispatch( onListPromociones( listPromociones ));
     }
+
 
     const startSavingPromociones = async ( data:Promociones , file:Blob | ArrayBuffer, fileName:string) => {
         let id:number;
@@ -32,7 +35,7 @@ export const usePromocionesStore = () => {
         await uploadBytes(imageRef, file).catch( error => console.log( error ));
         const publicImageUrl = await getDownloadURL(imageRef)
         data.photoUrl = publicImageUrl;
-        await addDoc(collection(FirebaseDB, "promociones"), { ...data })
+        await addDoc(collection(FirebaseDB, "promociones"), {userId:'camv29@gmail.com', ...data })
             .then( () => {
                 dispatch( onAddNewPromocion( data ));
             })
