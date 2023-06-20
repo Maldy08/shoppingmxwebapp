@@ -3,9 +3,9 @@ import { RootState } from "../store/store"
 import {  addDoc, collection, deleteDoc, doc, getDocs , query, updateDoc, where } from "firebase/firestore";
 import { promocionesCollection } from "../firebase/collections";
 import { Promociones } from "@interfaces";
-import { onListPromociones } from "../store/promociones/promocionesSlice";
-import { FirebaseDB } from "../firebase/config";
-import { onAddNewProducto } from "../store/productos/productosSlice";
+import { onAddNewPromocion, onListPromociones } from "../store/promociones/promocionesSlice";
+import { FirebaseDB, FirebaseStorage } from "../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const usePromocionesStore = () => {
 
@@ -13,7 +13,7 @@ export const usePromocionesStore = () => {
     const dispatch = useDispatch();
 
     const startLoadingPromociones = async ( negocioId?:string ) => {
-        const q = query(promocionesCollection, where('negocio', '==', negocioId ));
+        const q = query(promocionesCollection);
         const promociones = await getDocs(q);
         const listPromociones: Promociones[] = [];
         promociones.docs.forEach( ( promocionDoc ) => {
@@ -28,10 +28,13 @@ export const usePromocionesStore = () => {
         let id:number;
         promociones.length > 0 ? id = promociones.length + 1 : id = 1;
         data.id = id.toString();
-
+        const imageRef = ref( FirebaseStorage, `images/promociones/${fileName}`)
+        await uploadBytes(imageRef, file).catch( error => console.log( error ));
+        const publicImageUrl = await getDownloadURL(imageRef)
+        data.photoUrl = publicImageUrl;
         await addDoc(collection(FirebaseDB, "promociones"), { ...data })
             .then( () => {
-                dispatch( onAddNewProducto( data ));
+                dispatch( onAddNewPromocion( data ));
             })
             .catch( error => console.log( error ))
     }

@@ -12,13 +12,14 @@ type Props = {
 export const TablePromociones = ( { promociones, onDeleteData, setModify }: Props ) => {
 
     return (
-        <table className="w-full text-sm text-left">
-            <thead className="border-bfont-medium dark:border-neutral-500 bg-blue-700 text-white">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="border-bfont-medium dark:border-neutral-500">
                 <tr>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">#</th>
-                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NOMBRE</th>
-                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ENCARGADO</th>
-                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">CORREO</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">NEGOCIO</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">FECHA</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">DESCRIPCION</th>
+                    <th scope="col" className=" px-6 py-4 dark:border-neutral-500">VIGENCIA</th>
                     <th scope="col" className=" px-6 py-4 dark:border-neutral-500">ACCIONES</th>
                 </tr>
             </thead>
@@ -31,8 +32,9 @@ export const TablePromociones = ( { promociones, onDeleteData, setModify }: Prop
                                 <td><img src={ promocion.photoUrl } className="rounded-lg h-12" alt="imagen" width={ 50 } /> </td>
                                
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.id_negocio }</td>
-                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.fecha_creacion.toDateString() }</td>
-                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.vigencia.toDateString() }</td>
+                                {/* <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.fecha_creacion.toJSON()}</td> */}
+                                <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.descripcion }</td>
+                                {/* <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">{ promocion.vigencia.toString() }</td> */}
                                 <td className="whitespace-nowrap  px-6 py-4 dark:border-neutral-500">
                                     <PencilSquareIcon title="Editar negocio" cursor="pointer" onClick={ () => {
                                         setModify( promocion )

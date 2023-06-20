@@ -22,7 +22,7 @@ const initialValues: Promociones = {
 }
 
 type Props = {
-    // onShowModalClick():void
+     onShowModalClick():void
     onSaveData: (data: Promociones) => Promise<void>
     modify:boolean
     promocion?: Promociones
@@ -62,7 +62,7 @@ type Props = {
 
 export const ModalAddPromocion = (
     {
-        //  onShowModalClick,
+         onShowModalClick,
          onSaveData,
          modify,
          promocion,
@@ -397,7 +397,7 @@ export const ModalAddPromocion = (
                                                 <button
                                                 className="uppercase text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-2"
                                                     type="button"
-                                                   // onClick={ onShowModalClick }
+                                                    onClick={ onShowModalClick }
                                                 >
                                                     Cerrar
                                                 </button>
