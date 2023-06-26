@@ -61,15 +61,37 @@ export const PromocionesPage = () => {
         }
 
         await startSavingPromociones( promocion, file!, fileName )
+            .then(() =>{
+                setShowModal(false)
+                startLoadingPromociones()
+            })
         
          console.log( promocion )
     }
 
     
     const editData =  ( data:Promociones ) => {
+
+        startLoadingProductosByNegocio( data.id_negocio )
+
+        setModify(true)
         setPromocionMod(data)
-        console.log(data)
+        setShowModal(true)
+        if(data.productos.length > 0 ) {
+            data.productos.map( (prod) => {
+                setProductosCargados( [{ ...prod }] )
+            })
+            setShowProductos(true)
+        }
+
+        if(data.categorias.length > 0 ) {
+            data.categorias.map( (cat) => {
+                setCategoriasCargadas( [{ ...cat}])
+            })
+            setShowCategorias(true)
+        }
     }
+
     const deleteData = async ( data:Promociones ) => {
 
         setPromocionDelete( data );

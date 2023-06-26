@@ -40,7 +40,7 @@ export const ModalAddProducto = ( props: Props ) => {
             {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                     {/*header*/}
-                    <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t">
+                    <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t bg-indigo-700 text-zinc-50">
                         <h3 className="text-1xl font-semibold">
                             
                           { props.modify? 'Modificar producto' : 'Agregar producto'}

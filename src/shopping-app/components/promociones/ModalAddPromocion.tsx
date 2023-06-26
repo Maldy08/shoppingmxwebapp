@@ -99,7 +99,7 @@ export const ModalAddPromocion = (
                 {/*content*/}
                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                       {/*header*/}
-                        <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t">
+                        <div className="flex items-start justify-between p-4 border-b border-solid border-slate-200 rounded-t bg-indigo-700 text-zinc-50">
                             <h3 className="text-1xl font-semibold">
                             { modify? 'Modificar promocion' : 'Agregar promocion'}
                             </h3>
@@ -197,7 +197,7 @@ export const ModalAddPromocion = (
 
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="flex items-center mb-4">
-                                                <input disabled={showCategorias} onChange={ onShowProductsClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                                <input disabled={showCategorias}  onChange={ onShowProductsClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                                 <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> productos</label>
 
                                                 <input disabled={showProducts} onChange={ onShowCategoriasClick } id="default-checkbox" type="checkbox" value="" className="w-4 h-4 ml-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
