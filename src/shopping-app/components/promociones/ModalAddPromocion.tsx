@@ -7,17 +7,18 @@ import { Categorias, Negocios, Productos, Promociones } from "@interfaces"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import "react-datepicker/dist/react-datepicker.css";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { Timestamp } from "firebase/firestore";
 
 const initialValues: Promociones = {
     id:'0',
     id_negocio: '',
     descuento:0,
     disponible:false,
-    fecha_creacion: new Date(),
+    fecha_creacion: new Timestamp(new Date().getSeconds(),new Date().getMilliseconds()),
     photoUrl:'',
     productos:[],
     categorias:[],
-    vigencia: new Date(),
+    vigencia: new Timestamp(new Date().getSeconds(),new Date().getMilliseconds()),
     descripcion: ''
 }
 
@@ -71,7 +72,6 @@ export const ModalAddPromocion = (
          categorias,
          negocios,
          handleChangeNegocio,
-         handleChangeCategoria,
          handleClickAddCategoria,
          handleClickEliminarCategoria,
          handleClickAddProducto,
@@ -121,7 +121,7 @@ export const ModalAddPromocion = (
 
                             >
                              {
-                                ({ setFieldValue, values, handleChange }) => (
+                                ({ setFieldValue, values }) => (
                                     <Form className="space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="">
@@ -166,9 +166,9 @@ export const ModalAddPromocion = (
                                                         title="fecha"
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         dateFormat="dd/MM/yyyy"
-                                                        minDate={ values.fecha_creacion}
+                                                        minDate={ values.fecha_creacion.toDate()}
                                                         // disabled={isSubmitting}
-                                                        selected={ values.vigencia } 
+                                                        selected={ values.vigencia.toDate() } 
                                                         onChange= {
                                                             ( date:any ) => setFieldValue('vigencia', date)
                                                         }
