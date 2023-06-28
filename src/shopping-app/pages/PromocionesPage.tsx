@@ -4,13 +4,14 @@ import { ModalAddPromocion, TablePromociones } from "../components/promociones";
 import { MainLayout } from "../layout/MainLayout"
 import { Categorias, Productos, Promociones } from "@interfaces";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { ModalDeleteGeneric } from "../components";
 
 
 export const PromocionesPage = () => {
     const { isLoading: isLoadingNegocios, negocios, startLoadingNegocios } = useNegociosStore();
     const { isLoading: isLoadingProductos, productosByNegocio , startLoadingProductosByNegocio, startLoadingProductoByNegocioAndIdProducto } = useProductosStore()
     const {isLoading: isLoadingCategorias, categoriasByNegocio, startLoadingCategoriasByNegocio, startLoadingCategoriasByNegocioAndIdCategoria } = useCategoriasStore()
-    const { isLoading , promociones , startLoadingPromociones ,startSavingPromociones } = usePromocionesStore()
+    const { isLoading , promociones , startLoadingPromociones ,startSavingPromociones, startDeletePromocion, startUpdatePromocion } = usePromocionesStore()
     const [promocionMod, setPromocionMod] = useState<Promociones>()
     const [promocionDelete, setPromocionDelete] =useState<Promociones>()
     const [changeNegocio, setChangeNegocio] = useState('')
@@ -26,8 +27,6 @@ export const PromocionesPage = () => {
     const [showDescuento, setShowDescuento] = useState(false)  
     const [file, setFile] = useState<Blob | ArrayBuffer>()
     const [fileName, setFileName] = useState("")  
- //   const categoriasCargadas: Categorias[] = [];
-
     
     useEffect(() => {
         //startLoadingProductos();\
@@ -60,19 +59,24 @@ export const PromocionesPage = () => {
 
         }
 
-        await startSavingPromociones( promocion, file!, fileName )
-            .then(() =>{
-                setShowModal(false)
-                startLoadingPromociones()
-            })
+        if(!modify){
+            await startSavingPromociones( promocion, file!, fileName )
+
+        } else {
+
+            await startUpdatePromocion( data )
+        }
         
-         console.log( promocion )
+        setShowModal(false)
+        startLoadingPromociones()
+        // console.log( promocion )
     }
 
     
     const editData =  ( data:Promociones ) => {
 
         startLoadingProductosByNegocio( data.id_negocio )
+        startLoadingCategoriasByNegocio( data.id_negocio )
 
         setModify(true)
         setPromocionMod(data)
@@ -96,6 +100,12 @@ export const PromocionesPage = () => {
 
         setPromocionDelete( data );
         setShowmodalDelete(true)
+    }
+
+    const confirmDeleteData = async ( data:Promociones ) => {
+        setShowmodalDelete(false)
+         await startDeletePromocion( data )
+            .then( () => startLoadingPromociones() )
     }
 
     const handleChangeNegocio = ( e:ChangeEvent<HTMLInputElement>) => {
@@ -134,16 +144,23 @@ export const PromocionesPage = () => {
 
     }
 
-
     const handleFileChange = (e:ChangeEvent<HTMLInputElement>) => {
         setFile( e.target.files![0]);
         setFileName(e.target.files![0].name)
     }
 
+    const handleCancel = () => setShowmodalDelete(false)
 
     return (
         <MainLayout>
             <div className="container mt-5">
+            { showmodalDelete && 
+                    <ModalDeleteGeneric 
+                        data={ promocionDelete! }
+                        onDelete={ confirmDeleteData }
+                        handleCancel={ handleCancel }
+                     />
+            }
                 <div>
                     {
                         showModal
@@ -182,6 +199,13 @@ export const PromocionesPage = () => {
                 <button onClick={ () => {
                   setShowModal( (prev) => !prev )
                   setModify(false)
+                  setShowCategorias(false)
+                  setShowProductos(false)
+                  setProductosCargados( [] )
+                  setCategoriasCargadas([])
+                  setFile(undefined)
+                  setFileName('')
+                
                  
               }} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2">
                   <PlusCircleIcon className="w-5 h-5 mr-2 -ml-1"/>
@@ -193,14 +217,13 @@ export const PromocionesPage = () => {
                       <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                       
                           <div className="overflow-hidden">
-                          { !isLoading && !isLoadingNegocios && !isLoadingProductos && !isLoadingCategorias &&
-                          <TablePromociones
-                            setModify={ editData }
-                            onDeleteData={ deleteData }
-                            promociones={ promociones }
-                          />
-                              
-                              }
+                            { !isLoading && !isLoadingNegocios && !isLoadingProductos && !isLoadingCategorias &&
+                                <TablePromociones
+                                    setModify={ editData }
+                                    onDeleteData={ deleteData }
+                                    promociones={ promociones }
+                                />
+                            }
                           </div>
                       </div>
                   </div>
