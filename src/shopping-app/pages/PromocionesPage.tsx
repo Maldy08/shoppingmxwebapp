@@ -94,6 +94,10 @@ export const PromocionesPage = () => {
             })
             setShowCategorias(true)
         }
+
+        if(data.descuento.toString() != '0') {
+           setShowDescuento(true)
+        }
     }
 
     const deleteData = async ( data:Promociones ) => {

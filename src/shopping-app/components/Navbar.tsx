@@ -17,7 +17,7 @@ export const Navbar = ( props: Props ) => {
                 "w-screen md:w-full sticky z-10 px-4 shadow-sm h-[73px] top-0 ": true,
             })}
         >
-            <div className="font-bold text-lg">Panel de Administración</div>
+            <div className="font-bold text-lg">Consola de Administración</div>
             <div className="flex-grow"></div>
             <button title="." className="md:hidden" onClick={ props.onMenuButtonClick }>
                 <Bars3Icon className="h-6 w-6"/>
