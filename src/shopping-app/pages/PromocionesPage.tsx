@@ -50,12 +50,13 @@ export const PromocionesPage = () => {
             productos: productosCargados,
             descripcion: data.descripcion,
             descuento: data.descuento,
-            disponible: data.disponible,
+            disponible: true,
             fecha_creacion: data.fecha_creacion,
             id: '0',
             id_negocio: data.id_negocio,
             photoUrl: '',
-            vigencia: data.vigencia
+            vigencia: data.vigencia,
+        
 
         }
 
@@ -64,7 +65,9 @@ export const PromocionesPage = () => {
 
         } else {
 
-            await startUpdatePromocion( data )
+            // console.log(promocion)
+
+            await startUpdatePromocion( promocion )
         }
         
         setShowModal(false)
