@@ -43,6 +43,17 @@ export const PromocionesPage = () => {
       }, [changeNegocio])
       
 
+      
+    const resetData = () => {
+        setShowProductos(false)
+        setShowCategorias(false)
+        setShowDescuento(false)
+        setProductosCargados( [] )
+        setCategoriasCargadas( [] )
+        startLoadingPromociones()
+
+    }
+
     const saveData = async ( data: Promociones ) => {
 
         const promocion: Promociones = {
@@ -52,11 +63,10 @@ export const PromocionesPage = () => {
             descuento: data.descuento,
             disponible: true,
             fecha_creacion: data.fecha_creacion,
-            id: '0',
+            id: data.id,
             id_negocio: data.id_negocio,
             photoUrl: '',
             vigencia: data.vigencia,
-        
 
         }
 
@@ -71,13 +81,13 @@ export const PromocionesPage = () => {
         }
         
         setShowModal(false)
-        startLoadingPromociones()
-        // console.log( promocion )
+        resetData()
+      
     }
 
     
     const editData =  ( data:Promociones ) => {
-
+        resetData()
         startLoadingProductosByNegocio( data.id_negocio )
         startLoadingCategoriasByNegocio( data.id_negocio )
 
@@ -86,7 +96,9 @@ export const PromocionesPage = () => {
         setShowModal(true)
         if(data.productos.length > 0 ) {
             data.productos.map( (prod) => {
-                setProductosCargados( [{ ...prod }] )
+                console.log(prod)
+                //setProductosCargados( [{ ...prod }] )
+                setProductosCargados( prev => [ ...prev, { ...prod }] )
             })
             setShowProductos(true)
         }

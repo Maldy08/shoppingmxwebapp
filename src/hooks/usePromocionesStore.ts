@@ -44,11 +44,14 @@ export const usePromocionesStore = () => {
 
     const startUpdatePromocion = async ( data:Promociones ) => {
         let docRef:any;
+        console.log(data.id)
         const q = query(promocionesCollection,where("id",'==', data.id));
         const promocion = await getDocs(q);
         promocion.docs.forEach( (promocionDoc ) => {
             docRef = promocionDoc.id
         })
+
+
 
         const promocionRef = doc(FirebaseDB,'promociones', docRef );
         await updateDoc( promocionRef, { ...data } )
