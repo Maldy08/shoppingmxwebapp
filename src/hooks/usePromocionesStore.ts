@@ -52,7 +52,6 @@ export const usePromocionesStore = () => {
         })
 
 
-
         const promocionRef = doc(FirebaseDB,'promociones', docRef );
         await updateDoc( promocionRef, { ...data } )
             .then(() => console.log('updated record'))

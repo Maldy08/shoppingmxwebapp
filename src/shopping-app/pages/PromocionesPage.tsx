@@ -48,9 +48,15 @@ export const PromocionesPage = () => {
         setShowProductos(false)
         setShowCategorias(false)
         setShowDescuento(false)
+        setPromocionDelete( undefined)
+        setPromocionMod(undefined)
         setProductosCargados( [] )
         setCategoriasCargadas( [] )
         startLoadingPromociones()
+        setFile(undefined)
+        setFileName('')
+        setModify(false)
+
 
     }
 
@@ -65,7 +71,7 @@ export const PromocionesPage = () => {
             fecha_creacion: data.fecha_creacion,
             id: data.id,
             id_negocio: data.id_negocio,
-            photoUrl: '',
+            photoUrl: data.photoUrl,
             vigencia: data.vigencia,
 
         }
@@ -96,8 +102,6 @@ export const PromocionesPage = () => {
         setShowModal(true)
         if(data.productos.length > 0 ) {
             data.productos.map( (prod) => {
-                console.log(prod)
-                //setProductosCargados( [{ ...prod }] )
                 setProductosCargados( prev => [ ...prev, { ...prod }] )
             })
             setShowProductos(true)
@@ -105,7 +109,7 @@ export const PromocionesPage = () => {
 
         if(data.categorias.length > 0 ) {
             data.categorias.map( (cat) => {
-                setCategoriasCargadas( [{ ...cat}])
+                setCategoriasCargadas( prev => [ ...prev, { ...cat}])
             })
             setShowCategorias(true)
         }
@@ -133,8 +137,6 @@ export const PromocionesPage = () => {
     }
 
     const handleChangeCategoria = (  e:ChangeEvent<HTMLInputElement> ) => {
-       // setChangeCategoria( e.target.value );
-       // categoriasCargadas.push({descripcion:e.target.value,id:'',negocioId:changeNegocio})
         setCategoriasCargadas( prev => [ ...prev,{ id:'0', descripcion: e.target.value, negocioId:changeNegocio}])
         //console.log({changeCategoriasCargadas});
     }
@@ -217,14 +219,7 @@ export const PromocionesPage = () => {
 
                 <button onClick={ () => {
                   setShowModal( (prev) => !prev )
-                  setModify(false)
-                  setShowCategorias(false)
-                  setShowProductos(false)
-                  setProductosCargados( [] )
-                  setCategoriasCargadas([])
-                  setFile(undefined)
-                  setFileName('')
-                
+                  resetData()
                  
               }} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2">
                   <PlusCircleIcon className="w-5 h-5 mr-2 -ml-1"/>
