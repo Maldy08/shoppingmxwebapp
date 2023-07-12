@@ -24,7 +24,7 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
     return (
         <>
         <div tabIndex={-1}  aria-hidden="true" className="w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className=" relative w-full max-w-lg max-h-full">
+            <div className=" relative w-full max-w-xl max-h-full">
             {/*content*/}
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                     {/*header*/}
@@ -56,7 +56,7 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                             {
                                 ({  }) => (
                                     <Form className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-4">
                                            <div className="">
                                                 <label htmlFor="negocioId" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Negocio
@@ -89,7 +89,8 @@ export const ModalAddCategorias = ({ modify, onSaveData, onShowModalClick, categ
                                                 <div className="mt-2">
                                                     <Field
                                                         name="descripcion"
-                                                        type="text"
+                                                        as="textarea"
+                                                        rows="2"
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
                                                     />

@@ -71,7 +71,7 @@ export const ModalAddProducto = ( props: Props ) => {
                             {
                                 ({ handleChange, setFieldValue }) => (
                                     <Form className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-4">
                                             <div className="">
                                                 <label htmlFor="id_negocio" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Negocio
@@ -109,7 +109,8 @@ export const ModalAddProducto = ( props: Props ) => {
                                                 <div className="mt-2">
                                                     <Field
                                                         name="descripcion"
-                                                        type="text"
+                                                        as="textarea"
+                                                        rows="3"
                                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                                                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
                                                          sm:text-sm sm:leading-6"
